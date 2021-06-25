@@ -9,7 +9,7 @@ public class Role {
     private Integer id;
     private String name;
     private String code;
-    private Date createdTime;
+    private Date createTime;
     private Integer maxCount;
     private Integer useCount;
 }

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理系统</title>
+    <script src="vue3.js"></script>
+    <script src="axios.min.js"></script>
+    <script src="index.full.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-plus/lib/index.full.js"></script>
+<!--    <link rel="stylesheet" href="index.css">-->
+<!--    <script src="index.full.js"></script>-->
+
+    <style>
+        .header{
+            background-color: #545c64;
+        }
+        .nav{
+            background-color: #545c64;
+        }
+        .content{
+            background-color: #fff;
+        }
+        #app{
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+            /*overflow: hidden;*/
+        }
+        .table{
+            border: 1px solid #dbdbdb;
+            margin: 15px 0px;
+        }
+        .deleteuser{
+            float: right;
+        }
+
+    </style>
+</head>
+<body id="app">
+<el-container>
+    <el-header class="header">
+        <el-menu :default-active="activeIndex" class="el-menu-demo"  background-color="#545c64"
+                 text-color="#fff"
+                 active-text-color="#ffd04b" mode="horizontal" @select="handleSelect">
+<!--            <el-menu-item index="1">角色管理</el-menu-item>-->
+<!--            <el-menu-item index="2">权限管理</el-menu-item>-->
+<!--            <el-menu-item index="3">订单管理</el-menu-item>-->
+        </el-menu>
+    </el-header>
+    <el-container>
+        <el-aside class="nav">
+            <el-menu
+                    :uniqueOpened="true"
+                    default-active="2"
+                    class="el-menu-vertical-demo"
+                    @open="handleOpen"
+                    @close="handleClose"
+                    background-color="#545c64"
+                    text-color="#fff"
+                    active-text-color="#ffd04b">
+                <el-menu-item index="1">
+                    <i class="el-icon-menu"></i>
+                    <template #title>角色管理</template>
+                </el-menu-item>
+<!--                <el-menu-item index="2">-->
+<!--                    <i class="el-icon-document"></i>-->
+<!--                    <template #title>用户列表</template>-->
+<!--                </el-menu-item>-->
+<!--                <el-menu-item index="3">-->
+<!--                    <i class="el-icon-setting"></i>-->
+<!--                    <template #title>用户搜索</template>-->
+<!--                </el-menu-item>-->
+            </el-menu>
+        </el-aside>
+        <el-main class="content">
+            <el-container>
+                <el-input v-model="input" style="width:200px;margin-right: 10px" placeholder="请输入内容"></el-input>
+                <el-button>搜索</el-button>
+                <el-button type="primary" @click="add">新增</el-button>
+            </el-container>
+            <el-table class="table"
+                      :data="tableData"
+                      stripe
+                      style="width: 100%">
+                <el-table-column
+                        prop="id"
+                        label="角色ID"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="角色名"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="code"
+                        label="角色码">
+                </el-table-column>
+                <el-table-column
+                        prop="createdTime"
+                        label="创建时间">
+                </el-table-column>
+                <el-table-column
+                        prop="maxCount"
+                        label="最大使用人数">
+                </el-table-column>
+                <el-table-column
+                        prop="useCount"
+                        label="已使用人数">
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="150">
+                    <template #default="scope">
+                        <el-button type="text" size="small">编辑</el-button>
+                        <el-button @click="deleteRole(scope.row.id)" type="text" size="small">删除</el-button>
+                        <el-button type="text" size="small">权限</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :total="totalitems"
+                    :page-size="pagesize"
+                    :current-page="currentPage"
+                    @current-change="currentChange"
+            >
+            </el-pagination>
+        </el-main>
+        <el-dialog title="角色信息" v-model="dialogFormVisible">
+            <el-form :model="form" :rules="rules" ref="form">
+                <el-form-item label="角色名" :label-width="formLabelWidth" prop="name">
+                    <el-input v-model="form.name" placeholder="请输入角色名" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="角色码" :label-width="formLabelWidth" prop="code">
+                    <el-input v-model="form.code" placeholder="请输入角色码(例如ROLE_ADMIN)" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="最大使用人数" :label-width="formLabelWidth" prop="maxCount">
+                    <el-input v-model.number="form.maxCount" placeholder="请输入该角色最大使用人数" autocomplete="off"></el-input>
+                </el-form-item>
+<!--                <el-form-item label="已使用人数" :label-width="formLabelWidth">-->
+<!--                    <el-input v-model="form.useCount" placeholder="请输入该角色已使用人数" autocomplete="off"></el-input>-->
+<!--                </el-form-item>-->
+                <el-form-item label="选择数据权限" :label-width="formLabelWidth" prop="value">
+                    <el-select v-model="form.value" placeholder="请选择数据权限" @change="treeCustomize">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                        >
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+            </el-form>
+            <el-tree v-if="treeShow" :data="treeData" :props="treeProps" node-key="id"
+                     @node-click="handleNodeClick"
+                     show-checkbox
+                     @check-change="handleNodeClick"
+            ></el-tree>
+            <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="resetForm('form')">重 置</el-button>
+                  <el-button type="primary" @click="roleConfirmClick('form')">确 定</el-button>
+                </span>
+            </template>
+        </el-dialog>
+    </el-container>
+</el-container>
+<script>
+
+    var data = {
+        data(){
+            return {
+                form:{
+                    name:"",
+                    code:"",
+                    maxCount:"",
+                    value: "",
+                },
+                dialogFormVisible:false,
+
+                // 添加角色有关数据
+                tableData:"",
+                treeData:"",
+                dialogTreeVisible:false,
+                treeShow:false,
+                //数据权限选择框
+                options: [{
+                    value: 'all',
+                    label: '全部'
+                }, {
+                    value: 'treeCustomize',
+                    label: '自定义'
+                },],
+
+                treeProps:{
+                    children: 'children',
+                    label: 'name'
+                },
+                //不能为空提示
+                rules:{
+                    name:[{
+                        required:true,message:"请输入角色名",trigger:"blur"
+                    }],
+                    code:[{
+                        required:true,message:"请输入角色码",trigger:"blur"
+                    }],
+                    maxCount:[{
+                        required:true,message:"请输入最大使用人数",trigger:"blur"
+                    },
+                        {
+                            type:'number',message: "必须为数字值",
+                        }],
+                    value:[{
+                        required:true,message:"请选择数据权限",trigger:"change"
+                    }],
+                }
+
+                // totalitems:0,
+                // pagesize: 3,
+                // // totalpages:0,
+                // currentPage:1
+            }
+        },
+        created(){
+            this.loadData();
+        },
+        methods:{
+            loadData(){
+                axios.get("/getRole").then(res=>{
+                    this.tableData = res.data;
+                    console.log(res.data);
+                    // this.totalitems = res.data.length;
+                })
+                //this.getPageData(this.currentPage,this.pagesize);
+            },
+            // getPageData(v1,v2){
+            //     axios.get("/userforpage?current="+v1+"&size="+v2).then(res=>{
+            //         this.tableData = res.data;
+            //     })
+            // },
+            // currentChange(val){
+            //     this.currentPage = val;
+            //     this.getPageData(val,this.pagesize)
+            // },
+            add(){
+                this.getTreeGroup()
+                this.dialogFormVisible=true;
+            },
+            getTreeGroup(){
+                axios.get("/api/group/user/tree").then(res=>{
+                    this.treeData = res.data.data;
+                })
+            },
+            treeCustomize(value){
+                this.form.value = value;
+                console.log(this.form.value)
+                if(value === "treeCustomize"){
+                    this.treeShow = true;
+                }
+                else
+                    this.treeShow = false;
+            },
+            roleConfirmClick(formName){
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        alert('添加成功');
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.treeShow = false;
+                this.$refs[formName].resetFields();
+            },
+            deleteRole(id){
+                if(confirm("确定删除此角色？")){
+                    axios.get("/deleteRole/"+id).then(res=>{
+                        alert(res.data);
+                    })
+                }
+
+            }
+        }
+    };
+    const app = Vue.createApp(data);
+    app.use(ElementPlus)
+    app.mount("#app");
+
+</script>
+
+</body>
+</html>
