@@ -12,6 +12,7 @@ public class User {
     private String name;
     private Integer sex;
     private Integer old;
+    private Integer groupId;
     private Date createdTime;
     private Date lastLoginTime;
 }
