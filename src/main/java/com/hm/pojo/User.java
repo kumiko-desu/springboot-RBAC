@@ -10,6 +10,7 @@ public class User {
     private String username;
     private String password;
     private String name;
+    private String salt;
     private Integer sex;
     private Integer old;
     private Integer groupId;
