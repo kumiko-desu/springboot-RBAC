@@ -3,7 +3,6 @@ package com.hm.controller;
 import com.hm.dao.RoleMapper;
 import com.hm.pojo.Response;
 import com.hm.service.RoleService;
-import com.hm.serviceImpl.RoleServiceImpl;
 import com.hm.pojo.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +38,7 @@ public class RoleController {
     @GetMapping("/insertRole")
     public Response insertRole(@RequestBody Role role){
 //        System.out.println(role.da);
-        
+
         return Response.success();
     }
 }

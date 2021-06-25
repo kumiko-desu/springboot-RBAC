@@ -1,7 +1,7 @@
 package com.hm.service;
 
 import com.hm.App;
-import com.hm.serviceImpl.RoleServiceImpl;
+import com.hm.service.impl.RoleServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

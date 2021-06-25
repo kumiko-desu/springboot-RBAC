@@ -1,4 +1,4 @@
-package com.hm.serviceImpl;
+package com.hm.service.impl;
 
 import com.hm.Utils.DataTreeUtil;
 import com.hm.dao.UserGroupMapper;
