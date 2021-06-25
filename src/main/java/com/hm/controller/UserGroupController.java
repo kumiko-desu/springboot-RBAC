@@ -2,9 +2,7 @@ package com.hm.controller;
 
 import com.hm.pojo.Response;
 import com.hm.pojo.User;
-import com.hm.service.UserGroupService;
-import com.hm.service.UserService;
-import com.hm.serviceImpl.UserGroupServiceImpl;
+import com.hm.service.impl.UserGroupServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

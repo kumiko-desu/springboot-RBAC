@@ -1,6 +1,5 @@
-package com.hm.serviceImpl;
+package com.hm.service.impl;
 
-import com.hm.service.UserGroupService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

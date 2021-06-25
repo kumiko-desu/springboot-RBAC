@@ -1,4 +1,4 @@
-package com.hm.serviceImpl;
+package com.hm.service.impl;
 
 import com.hm.dao.UserMapper;
 import com.hm.pojo.User;
