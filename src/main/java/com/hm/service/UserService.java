@@ -8,6 +8,8 @@ import java.util.List;
 @Service
 public interface UserService {
 
-    public List<User> getUserByGroupId(Integer groupId);
+    public List<User> getByGroupId(Integer groupId);
+
+    public User getByUserName(String userName);
 
 }

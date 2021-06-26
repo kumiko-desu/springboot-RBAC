@@ -22,8 +22,8 @@ public class UserGroupServiceImpl implements UserGroupService {
         * @description 返回用户组树形结构体
     */
     @Override
-    public List<UserGroup> getUserGroupTree() {
-        List<UserGroup> userGroups = userGroupMapper.selectUserGroup();
+    public List<UserGroup> getTree() {
+        List<UserGroup> userGroups = userGroupMapper.selectAll();
         if(userGroups.size() > 0){
             //设置用户组根Id为0
             Integer rootGroupId = 0;

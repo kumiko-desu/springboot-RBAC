@@ -10,6 +10,6 @@ import java.util.List;
 public interface UserGroupMapper {
 
     @Select("select * from user_group")
-    List<UserGroup> selectUserGroup();
+    List<UserGroup> selectAll();
 
 }

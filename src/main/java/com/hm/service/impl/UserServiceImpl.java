@@ -20,7 +20,17 @@ public class UserServiceImpl implements UserService {
         * @description 根据groupId获取用户列表
     */
     @Override
-    public List<User> getUserByGroupId(Integer groupId) {
-        return userMapper.selectUserByGroupId(groupId);
+    public List<User> getByGroupId(Integer groupId) {
+        return userMapper.selectByGroupId(groupId);
+    }
+
+    /**
+        * @return com.hm.pojo.User
+        * @date 2021/6/26 9:05
+        * @description 根据用户名获取一个用户
+    */
+    @Override
+    public User getByUserName(String userName) {
+        return userMapper.selectByUserName(userName);
     }
 }

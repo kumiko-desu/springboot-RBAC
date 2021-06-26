@@ -8,6 +8,6 @@ import java.util.List;
 @Service
 public interface UserGroupService {
 
-    public List<UserGroup> getUserGroupTree();
+    public List<UserGroup> getTree();
 
 }

@@ -35,4 +35,9 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.insertRole(role);
     }
 
+    @Override
+    public List<Role> getRoleByUserId(Integer userId) {
+        return roleMapper.getRoleByUserId(userId);
+    }
+
 }

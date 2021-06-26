@@ -18,7 +18,7 @@ public class UserController {
 
     @RequestMapping("")
     public Response<List<User>> getUserListByGroupId(Integer groupId){
-        return Response.success(userService.getUserByGroupId(groupId));
+        return Response.success(userService.getByGroupId(groupId));
     }
 
 }

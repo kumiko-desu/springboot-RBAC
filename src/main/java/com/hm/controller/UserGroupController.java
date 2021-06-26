@@ -18,7 +18,7 @@ public class UserGroupController {
 
     @RequestMapping("/tree")
     public Response<List<User>> getUserGroupTree(){
-        return Response.success(userGroupService.getUserGroupTree());
+        return Response.success(userGroupService.getTree());
     }
 
 }

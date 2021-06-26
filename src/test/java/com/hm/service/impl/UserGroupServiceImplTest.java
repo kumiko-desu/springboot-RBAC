@@ -11,7 +11,7 @@ public class UserGroupServiceImplTest {
     UserGroupServiceImpl userGroupService;
 
     @Test
-    public void getUserGroupTreeTest(){
-        System.out.println(userGroupService.getUserGroupTree());
+    public void getTreeTest(){
+        System.out.println(userGroupService.getTree());
     }
 }
