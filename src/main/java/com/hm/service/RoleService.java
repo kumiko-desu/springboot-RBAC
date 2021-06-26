@@ -14,6 +14,4 @@ public interface RoleService {
 
     public int insertRole(Role role);
 
-    public List<Role> getRoleByUserId(Integer userId);
-
 }
