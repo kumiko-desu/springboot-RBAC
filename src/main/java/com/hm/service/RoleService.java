@@ -14,4 +14,7 @@ public interface RoleService {
 
     public int insertRole(Role role);
 
+    // 判断 roleIds 是否满足 先决条件
+    public Boolean isInclude(List<Integer> roleIds);
+
 }

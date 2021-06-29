@@ -1,6 +1,7 @@
 package com.hm.service.impl;
 
 import com.hm.dao.UserMapper;
+import com.hm.pojo.Role;
 import com.hm.pojo.User;
 import com.hm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByUserName(String userName) {
         return userMapper.selectByUserName(userName);
+    }
+
+    /**
+        * @return void
+        * @date 2021/6/29 17:27
+        * @description 根据用户信息，用户组id，选择的角色id 新增用户
+    */
+    @Override
+    public void addUser(User user, Integer groupId, List<Integer> roleIds) {
+
     }
 }
