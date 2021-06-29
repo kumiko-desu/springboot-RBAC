@@ -13,7 +13,7 @@ public interface RoleMergeGroupMapper {
     public List<RoleMergeGroup> getByRoleIds(@Param("roleIds") List<Integer> roleIds);
 
     //根据 groupId 和 roleIds ， 判断roleIds是否包括 group 中所有 role
-    //为 0 则 不满足
-    public int notNeedMerge(@Param("groupId") Integer groupId, @Param("roleIds") List<Integer> roleIds);
+    //为 0 则 满足，需要角色合并
+    public int needMerge(@Param("groupId") Integer groupId, @Param("roleIds") List<Integer> roleIds);
 
 }

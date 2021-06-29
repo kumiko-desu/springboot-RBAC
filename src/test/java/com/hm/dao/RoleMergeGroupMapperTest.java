@@ -34,7 +34,7 @@ public class RoleMergeGroupMapperTest {
 
         System.out.println(roleMergeGroupMapper.getByRoleIds(roleIds));
 
-        System.out.println(roleMergeGroupMapper.notNeedMerge(1,roleIds));
+        System.out.println(roleMergeGroupMapper.needMerge(1,roleIds));
 
     }
 

@@ -3,6 +3,7 @@ package com.hm.pojo;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class Role {
@@ -12,4 +13,6 @@ public class Role {
     private Date createTime;
     private Integer maxCount;
     private Integer useCount;
+
+    List<Permission> permissions;
 }
