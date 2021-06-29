@@ -31,7 +31,7 @@ public class RoleServiceImpl implements RoleService {
     public int insertRole(Role role){
         Date date = new Date();
         Timestamp t = new Timestamp(date.getTime());
-        role.setCreateTime(t);
+        role.setCreatedTime(t);
         return roleMapper.insertRole(role);
     }
 

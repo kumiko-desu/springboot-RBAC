@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,8 +36,7 @@ public class LoginServiceImpl implements LoginService {
     ObjectMapper objectMapper;
 
     @Override
-    public void login(User user, HttpSession session) {
-
+    public void login(User user) {
         // 获取所有角色
         List<Role> roles = getRoles(user);
         String key = "USER_"+ user.getId();
@@ -53,7 +51,6 @@ public class LoginServiceImpl implements LoginService {
                 e.printStackTrace();
             }
         }
-
 
     }
 
