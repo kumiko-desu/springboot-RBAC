@@ -133,33 +133,31 @@
             </el-pagination>
         </el-main>
         <el-dialog title="角色信息" v-model="dialogFormVisible">
-            <el-form :model="form" :rules="rules" ref="form">
+            <el-form :model="form.addRoleData" :rules="rules" ref="form">
                 <el-form-item label="角色名" :label-width="formLabelWidth" prop="name">
-                    <el-input v-model="form.name" placeholder="请输入角色名" autocomplete="off"></el-input>
+                    <el-input v-model="form.addRoleData.name" placeholder="请输入角色名" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="角色码" :label-width="formLabelWidth" prop="code">
-                    <el-input v-model="form.code" placeholder="请输入角色码(例如ROLE_ADMIN)" autocomplete="off"></el-input>
+                    <el-input v-model="form.addRoleData.code" placeholder="请输入角色码(例如ROLE_ADMIN)" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="最大使用人数" :label-width="formLabelWidth" prop="maxCount">
-                    <el-input v-model.number="form.maxCount" placeholder="请输入该角色最大使用人数" autocomplete="off"></el-input>
-                </el-form-item>
-<!--                <el-form-item label="已使用人数" :label-width="formLabelWidth">-->
-<!--                    <el-input v-model="form.useCount" placeholder="请输入该角色已使用人数" autocomplete="off"></el-input>-->
-<!--                </el-form-item>-->
-                <el-form-item label="选择数据权限" :label-width="formLabelWidth" prop="value">
-                    <el-select v-model="form.value" placeholder="请选择数据权限" @change="treeCustomize">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                        >
-                        </el-option>
-                    </el-select>
+                    <el-input v-model.number="form.addRoleData.maxCount" placeholder="请输入该角色最大使用人数" autocomplete="off"></el-input>
                 </el-form-item>
 
+<!--                <el-form-item label="选择数据权限" :label-width="formLabelWidth" prop="value">-->
+<!--                    <el-select v-model="form.value" placeholder="请选择数据权限" @change="treeCustomize">-->
+<!--                        <el-option-->
+<!--                                v-for="item in options"-->
+<!--                                :key="item.value"-->
+<!--                                :label="item.label"-->
+<!--                                :value="item.value"-->
+<!--                        >-->
+<!--                        </el-option>-->
+<!--                    </el-select>-->
+<!--                </el-form-item>-->
+
             </el-form>
-            <el-tree v-if="treeShow" :data="treeData" :props="treeProps" node-key="id"
+            <el-tree ref="userTree" v-if="treeShow" :data="treeData" :props="treeProps" node-key="id"
                      @node-click="handleNodeClick"
                      show-checkbox
                      @check-change="handleNodeClick"
@@ -179,17 +177,21 @@
         data(){
             return {
                 form:{
-                    name:"",
-                    code:"",
-                    maxCount:"",
+                    addRoleData: {
+                        name:"",
+                        code:"",
+                        maxCount:"",
+                    },
                     value: "",
                 },
+                //角色权限数据
+                rolePermissionData:"",
+                //添加表单dialog显示控制
                 dialogFormVisible:false,
 
                 // 添加角色有关数据
                 tableData:"",
                 treeData:"",
-                dialogTreeVisible:false,
                 treeShow:false,
                 //数据权限选择框
                 options: [{
@@ -204,7 +206,7 @@
                     children: 'children',
                     label: 'name'
                 },
-                //不能为空提示
+                //添加角色信息不能为空提示
                 rules:{
                     name:[{
                         required:true,message:"请输入角色名",trigger:"blur"
@@ -233,9 +235,10 @@
             this.loadData();
         },
         methods:{
+            //载入角色数据
             loadData(){
-                axios.get("/getRole").then(res=>{
-                    this.tableData = res.data;
+                axios.get("/selectRole").then(res=>{
+                    this.tableData = res.data.data;
                     console.log(res.data);
                     // this.totalitems = res.data.length;
                 })
@@ -250,15 +253,18 @@
             //     this.currentPage = val;
             //     this.getPageData(val,this.pagesize)
             // },
+            //打开添加对话框
             add(){
                 this.getTreeGroup()
                 this.dialogFormVisible=true;
             },
+            //获取用户组tree数据
             getTreeGroup(){
                 axios.get("/api/group/user/tree").then(res=>{
                     this.treeData = res.data.data;
                 })
             },
+            //自定义显示用户组tree
             treeCustomize(value){
                 this.form.value = value;
                 console.log(this.form.value)
@@ -268,17 +274,29 @@
                 else
                     this.treeShow = false;
             },
+            //添加表单提交验证
             roleConfirmClick(formName){
+                // this.rolePermissionData = this.$refs.userTree.getCheckedNodes()
+                // console.log(this.rolePermissionData)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('添加成功');
+                        console.log('添加成功');
+                        this.FormCommit();
                     }
                 });
             },
+            //提交角色数据
+            FormCommit(){
+                axios.post("/insertRole",this.form.addRoleData).then(res=>{
+                    alert(res);
+                })
+            },
+            //重置添加表单
             resetForm(formName) {
                 this.treeShow = false;
                 this.$refs[formName].resetFields();
             },
+            //删除角色
             deleteRole(id){
                 if(confirm("确定删除此角色？")){
                     axios.get("/deleteRole/"+id).then(res=>{

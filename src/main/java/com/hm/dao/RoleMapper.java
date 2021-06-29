@@ -15,7 +15,7 @@ public interface RoleMapper {
     @Delete("delete from role where id = #{id}")
     public int deleteRole(@Param("id") int id);
 
-    @Insert("insert into role values (#{Role.name} #{Role.code} #{Role.createdTime} #{Role.maxCount} #{Role.useCount})")
+    @Insert("insert into role(name,code,created_time,max_count,use_count) values (#{Role.name},#{Role.code},#{Role.createdTime},#{Role.maxCount},#{Role.useCount})")
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     public int insertRole(@Param("Role") Role role);
 

@@ -3,15 +3,12 @@ package com.hm.service.impl;
 import com.hm.dao.RoleIncludeGroupItemMapper;
 import com.hm.dao.RoleIncludeGroupMapper;
 import com.hm.pojo.RoleIncludeGroup;
-import com.hm.pojo.RoleIncludeGroupItem;
 import com.hm.service.RoleService;
 import com.hm.dao.RoleMapper;
 import com.hm.pojo.Role;
-import com.hm.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -38,8 +35,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public int insertRole(Role role){
         Date date = new Date();
-        Timestamp t = new Timestamp(date.getTime());
-        role.setCreatedTime(t);
+        role.setCreatedTime(date);
         return roleMapper.insertRole(role);
     }
 
