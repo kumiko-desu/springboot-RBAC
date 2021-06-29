@@ -1,6 +1,5 @@
 package com.hm.service.impl;
 
-import com.hm.dao.RoleIncludeGroupItemMapper;
 import com.hm.dao.RoleIncludeGroupMapper;
 import com.hm.pojo.RoleIncludeGroup;
 import com.hm.service.RoleService;
@@ -17,8 +16,6 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     RoleMapper roleMapper;
-    @Autowired
-    RoleIncludeGroupItemMapper roleIncludeGroupItemMapper;
     @Autowired
     RoleIncludeGroupMapper roleIncludeGroupMapper;
 
