@@ -1,5 +1,6 @@
 package com.hm.service.impl;
 
+import com.hm.pojo.Permission;
 import com.hm.service.RoleService;
 import com.hm.dao.RoleMapper;
 import com.hm.pojo.Role;
@@ -30,8 +31,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public int insertRole(Role role){
         Date date = new Date();
-        Timestamp t = new Timestamp(date.getTime());
-        role.setCreatedTime(t);
+        role.setCreatedTime(date);
         return roleMapper.insertRole(role);
     }
 
