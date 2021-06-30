@@ -16,6 +16,10 @@ public class RoleController {
     @Autowired
     RoleService roleService;
 
+    @GetMapping("/role/{id}")
+    public Response<Role> getByRoleId(@PathVariable Integer id){
+        return Response.success(roleService.selectById(id));
+    }
 
     @GetMapping("/selectRole")
     public Response<List<Role>> selectRole(){
@@ -23,7 +27,7 @@ public class RoleController {
     }
 
     @GetMapping("/deleteRole/{id}")
-    public Response deleteRole(@PathVariable("id") int id){
+    public Response deleteRole(@PathVariable("id") Integer id){
         if(roleService.deleteRole(id)==1)
             return Response.success();
         else

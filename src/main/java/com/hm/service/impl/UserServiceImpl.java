@@ -46,7 +46,8 @@ public class UserServiceImpl implements UserService {
         * @description 根据用户信息，用户组id，选择的角色id 新增用户
     */
     @Override
-    public void addUser(User user, Integer groupId, List<Integer> roleIds) {
-
+    public void addUser(User user) {
+        userMapper.insertOne(user);
+        userMapper.insertUserRole(user.getId(), user.getRoleIds());
     }
 }

@@ -22,6 +22,11 @@ public class RoleServiceImpl implements RoleService {
     RoleExclusionGroupMapper roleExclusionGroupMapper;
 
     @Override
+    public Role selectById(Integer id){
+        return roleMapper.selectById(id);
+    }
+
+    @Override
     public List<Role> selectRole(){
         return roleMapper.selectRole();
     }

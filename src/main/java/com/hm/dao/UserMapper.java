@@ -23,6 +23,8 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     public int insertOne(@Param("user") User user);
 
+    public int insertUserRole(@Param("userId") Integer userId, @Param("roleIds") List<Integer> roleIds);
+
     @Delete("delete from user where id=#{id}")
     public int DeleteById(@Param("id") Integer id);
 

@@ -14,6 +14,6 @@ public interface UserService {
 
     public User getByUserName(String userName);
 
-    public void addUser(User user, Integer groupId, List<Integer> roleIds);
+    public void addUser(User user);
 
 }

@@ -32,19 +32,21 @@ public class UserController {
     }
 
     @RequestMapping("/add")
-    public Response addUser(@RequestBody User user, Integer groupId, List<Integer> roleIds){
+    public Response addUser(@RequestBody User user){
         // 判断空属性
 
         // 用户密码加密
         String salt = UserUtils.createSalt();
         user.setSalt(salt);
         user.setPassword(UserUtils.calcHashPwd(user.getPassword(), salt));
+        Integer groupId = user.getGroupId();
+        List<Integer> roleIds = user.getRoleIds();
         // 判断 roleIds 是否满足条件
         if (!roleService.isInclude(roleIds) ||
             !roleService.isExclusion(groupId, roleIds))
             return Response.fail("角色冲突");
         // 新增用户
-        userService.addUser(user,groupId,roleIds);
+        userService.addUser(user);
         return Response.success("新增成功");
     }
 

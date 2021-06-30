@@ -9,6 +9,8 @@ import java.util.Set;
 @Service
 public interface RoleService {
 
+    public Role selectById(Integer id);
+
     public List<Role> selectRole();
 
     public int deleteRole(int id);

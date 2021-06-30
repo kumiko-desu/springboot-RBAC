@@ -12,6 +12,9 @@ public interface RoleMapper {
     @Select("select * from role")
     public List<Role> selectRole();
 
+    @Select("select * from role where id = #{id}")
+    public Role selectById(Integer id);
+
     @Delete("delete from role where id = #{id}")
     public int deleteRole(@Param("id") int id);
 
