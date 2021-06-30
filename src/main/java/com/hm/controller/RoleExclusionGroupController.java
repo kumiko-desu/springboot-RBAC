@@ -19,7 +19,7 @@ public class RoleExclusionGroupController {
     @Autowired
     RoleExclusionGroupService roleExclusionGroupService;
 
-    @GetMapping("/getExclusionGroup")
+    @GetMapping("/get")
     public Response<List<RoleExclusionGroup>> getExclusionGroup(){
         return Response.success(roleExclusionGroupService.getExclusionGroup());
     }
@@ -27,6 +27,12 @@ public class RoleExclusionGroupController {
     @RequestMapping("/add")
     public Response add(@RequestBody RoleExclusionGroup group){
         roleExclusionGroupService.add(group, group.getRoleIds());
+        return Response.success();
+    }
+
+    @RequestMapping("/del")
+    public Response del(Integer groupId){
+        roleExclusionGroupService.del(groupId);
         return Response.success();
     }
 
