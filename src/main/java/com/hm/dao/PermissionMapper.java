@@ -11,7 +11,7 @@ public interface PermissionMapper {
     @Select("select * from permission")
     List<Permission> findAllPermission();
 
-    @Insert("insert into permission (name,code,created_time) value (#{permission.name},#{permission.code},#{permission.created_time,jdbcType=TIMESTAMP})")
+    @Insert("insert into permission (name,code,created_time) value (#{permission.name},#{permission.code},#{permission.createdTime,jdbcType=TIMESTAMP})")
     int InsertPermission(@Param("permission") Permission permission);
 
     @Delete("delete from permission where id=#{id}")

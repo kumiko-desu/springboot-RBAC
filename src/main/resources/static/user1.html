@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="axios.min.js"></script>
+    <script src="//unpkg.com/vue@next"></script>
+    <script src="//unpkg.com/element-plus/lib/index.full.js"></script>
+    <style>
+      @import url("//unpkg.com/element-plus/lib/theme-chalk/index.css");
+      .el-aside {
+          background-color: #D3DCE6;
+          color: #333;
+          text-align: center;
+          line-height: 200px;
+      }
+
+      .el-main {
+          background-color: #E9EEF3;
+          color: #333;
+          text-align: center;
+          line-height: 160px;
+      }
+
+      body > .el-container {
+          margin-bottom: 40px;
+      }
+
+      .el-container:nth-child(5) .el-aside,
+      .el-container:nth-child(6) .el-aside {
+          line-height: 260px;
+      }
+
+      .el-container:nth-child(7) .el-aside {
+          line-height: 320px;
+      }
+
+    </style>
+<body>
+  <div id="app">
+    <div class="common-layout">
+        <el-container>
+          <el-aside width="200px">
+            <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick" ></el-tree>
+          </el-aside>
+          <el-main >
+              <el-container>
+                  <el-input v-model="input" style="width:200px;margin-right: 10px" placeholder="请输入内容"></el-input>
+                  <el-button>搜索</el-button>
+                  <el-button type="primary" @click="add">新增</el-button>
+              </el-container>
+              <el-table class="table"
+                        :data="tableData"
+                        stripe
+                        style="width: 100%">
+                  <el-table-column
+                          prop="id"
+                          label="序号"
+                          width="180">
+                  </el-table-column>
+                  <el-table-column
+                          prop="username"
+                          label="用户名"
+                          width="180">
+                  </el-table-column>
+                  <el-table-column
+                          prop="password"
+                          label="密码">
+                  </el-table-column>
+                  <el-table-column
+                          prop="name"
+                          label="真实姓名">
+                  </el-table-column>
+                  <el-table-column
+                          prop="old"
+                          label="年龄">
+                  </el-table-column>
+                  <el-table-column
+                          prop="createdTime"
+                          label="创立时间">
+                  </el-table-column>
+                  <el-table-column
+                          fixed="right"
+                          label="操作"
+                          width="150">
+                      <template #default="scope">
+                          <el-button type="text" size="small">编辑</el-button>
+                          <el-button @click="deleteRole(scope.row.id)" type="text" size="small">删除</el-button>
+                          <el-button type="text" size="small">权限</el-button>
+                      </template>
+                  </el-table-column>
+              </el-table>
+          </el-main>
+        </el-container>
+    </div>
+  </div>
+
+<script>
+  var Main = {
+    data() {
+      return {
+        data: [],
+          tableData:[],
+        defaultProps: {
+          children: 'children',
+          label: 'name'
+        }
+      };
+    },
+    created(){
+      this.loadData();
+      this.loadData1();
+    },
+    methods: {
+      loadData(){
+        axios.get("http://localhost:80/api/group/user/tree").then(res=>{
+          this.data=res.data.data;
+          console.log(res);
+        })
+      },
+        loadData1(){
+            axios.get("http://localhost:80/api/group/user/tree").then(res=>{
+                this.data=res.data.data;
+                console.log(res);
+            })
+        },
+      handleNodeClick(data) {
+          axios.get("http://localhost:80/api/user?groupId="+data.id).then(res=>{
+              this.tableData=res.data.data;
+              console.log(res);
+              console.log(data);
+      })
+      }
+    }
+  };
+  const app = Vue.createApp(Main);
+  app.use(ElementPlus);
+  app.mount("#app")
+</script>
+</body>
+</html>
