@@ -51,12 +51,29 @@ var data = {
                 }],
             },
             //互斥角色信息
+            exclusion_group_id:'',
             table_Exclusion_Data:"",
             exclusion_tree_data:"",
             // exclusion_show:false,
             exclusion_Props:{
                 label:"name",
-            }
+            },
+
+            //添加互斥角色组
+            exclusion_show: false,
+            exclusion_form:{
+                addExclusionGroupData:{
+                    name:"",
+                    description:"",
+                    roleIds:[],
+                }
+            },
+            exclusion_options:"",
+            exclusion_rules:{
+                name:[{
+                    required:true,message:"请输入角色名",trigger:"blur"
+                }],
+            },
 
             // totalitems:0,
             // pagesize: 3,
@@ -145,10 +162,44 @@ var data = {
                 console.log(this.exclusion_tree_data);
             })
         },
+        //点击互斥组显示其包含角色
         handleNodeClickExclusion(data){
-            axios.get("/getExclusionRole/"+data.id).then(res=>{
+            this.exclusion_group_id = data.id;
+            axios.get("/getExclusionRole/"+this.exclusion_group_id).then(res=>{
                 this.table_Exclusion_Data = res.data.data;
             })
+        },
+        //点击新增角色组显示dialog
+        add_exclusion(){
+            this.exclusion_show = true;
+        },
+        //重置新增角色组dialog
+        exclusion_resetForm(formName){
+            console.log(this.exclusion_form.role)
+            this.$refs[formName].resetFields();
+        },
+        //提交新增角色组表单进行验证
+        exclusion_roleConfirmClick(formName){
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    console.log('添加成功');
+                    this.exclusionFormCommit();
+                }
+            });
+        },
+        //提交新增角色组数据
+        exclusionFormCommit(){
+            axios.post("/add",this.exclusion_form.addExclusionGroupData).then(res=>{
+                alert(res.data.msg)
+            })
+        },
+        exclusionDeleteRole(roleid){
+            if(confirm("确定删除此角色？")){
+                console.log(roleid,this.exclusion_group_id)
+                axios.get(""+roleid+this.exclusion_group_id).then(res=>{
+                    alert(res.data.msg);
+                })
+            }
         }
     }
 };
