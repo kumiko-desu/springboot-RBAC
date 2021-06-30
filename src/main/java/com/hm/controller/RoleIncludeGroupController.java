@@ -1,8 +1,8 @@
 package com.hm.controller;
 
 import com.hm.pojo.Response;
-import com.hm.pojo.RoleExclusionGroup;
-import com.hm.service.RoleExclusionGroupService;
+import com.hm.pojo.RoleIncludeGroup;
+import com.hm.service.RoleIncludeGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,16 +16,22 @@ import java.util.List;
 public class RoleIncludeGroupController {
 
     @Autowired
-    RoleExclusionGroupService roleExclusionGroupService;
+    RoleIncludeGroupService roleIncludeGroupService;
 
-    @GetMapping("/getExclusionGroup")
-    public Response<List<RoleExclusionGroup>> getExclusionGroup(){
-        return Response.success(roleExclusionGroupService.getExclusionGroup());
+    @GetMapping("/get")
+    public Response<List<RoleIncludeGroup>> getIncludeGroup(){
+        return Response.success(roleIncludeGroupService.get());
     }
 
     @RequestMapping("/add")
-    public Response add(@RequestBody RoleExclusionGroup group){
-        roleExclusionGroupService.add(group, group.getRoleIds());
+    public Response add(@RequestBody RoleIncludeGroup group){
+        roleIncludeGroupService.add(group, group.getRoleIds());
+        return Response.success();
+    }
+
+    @RequestMapping("del")
+    public Response del(Integer groupId){
+        roleIncludeGroupService.del(groupId);
         return Response.success();
     }
 

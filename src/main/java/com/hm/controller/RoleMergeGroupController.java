@@ -1,8 +1,8 @@
 package com.hm.controller;
 
 import com.hm.pojo.Response;
-import com.hm.pojo.RoleExclusionGroup;
-import com.hm.service.RoleExclusionGroupService;
+import com.hm.pojo.RoleMergeGroup;
+import com.hm.service.RoleMergeGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,16 +16,16 @@ import java.util.List;
 public class RoleMergeGroupController {
 
     @Autowired
-    RoleExclusionGroupService roleExclusionGroupService;
+    RoleMergeGroupService roleMergeGroupService;
 
-    @GetMapping("/getExclusionGroup")
-    public Response<List<RoleExclusionGroup>> getExclusionGroup(){
-        return Response.success(roleExclusionGroupService.getExclusionGroup());
+    @GetMapping("/get")
+    public Response<List<RoleMergeGroup>> getMergeGroup(){
+        return Response.success(roleMergeGroupService.getMergeGroup());
     }
 
     @RequestMapping("/add")
-    public Response add(@RequestBody RoleExclusionGroup group){
-        roleExclusionGroupService.add(group, group.getRoleIds());
+    public Response add(@RequestBody RoleMergeGroup group){
+        roleMergeGroupService.add(group, group.getRoleIds());
         return Response.success();
     }
 

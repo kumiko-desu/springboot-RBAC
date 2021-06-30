@@ -1,6 +1,7 @@
 package com.hm.dao;
 
 import com.hm.pojo.RoleIncludeGroupItem;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -18,5 +19,9 @@ public interface RoleIncludeGroupItemMapper {
             "(select group_id from role_include_group\n" +
             "where role_id = #{roleId})")
     public List<RoleIncludeGroupItem> getByRoleId(@Param("roleId") Integer roleId);
+
+    @Insert("insert into role_include_group_item (group_id, role_id) values(#{groupId}, #{roleId})")
+    public int add(Integer groupId, Integer roleId);
+
 
 }

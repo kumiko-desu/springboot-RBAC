@@ -2,6 +2,8 @@ package com.hm.pojo;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class RoleIncludeGroup {
 
@@ -10,5 +12,7 @@ public class RoleIncludeGroup {
     private String name;
     private Boolean type;
     private String description;
+
+    private List<Integer> roleIds;
 
 }

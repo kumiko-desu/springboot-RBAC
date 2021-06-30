@@ -1,14 +1,15 @@
 package com.hm.dao;
 
 import com.hm.pojo.RoleIncludeGroup;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface RoleIncludeGroupMapper {
+
+    @Select("select * from role_include_group")
+    public List<RoleIncludeGroup> get();
 
     @Select("select * from role_include_group where role_id = #{roleId}")
     public RoleIncludeGroup getByRoleId(@Param("roleId") Integer roleId);
@@ -23,4 +24,14 @@ public interface RoleIncludeGroupMapper {
     // or 时 做的判断， 计算group包含多少个， 大于 0 则满足先决条件
     public int includeOr(@Param("groupId") Integer groupId, @Param("roleIds") List<Integer> roleIds);
 
+    @Delete("delete role_include_group,role_include_group_item from role_include_group_item \n" +
+            "left join role_include_group\n" +
+            "on role_include_group_item.group_id = role_include_group.id\n" +
+            "where role_include_group.id = #{groupId}")
+    public int del(@Param("groupId") Integer groupId);
+
+    @Insert("insert into role_include_group(role_id, name, type, description) \n" +
+            "values (#{group.roleId}, #{group.name}, #{group.type}, #{group.description})")
+    @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
+    public int add(@Param("group") RoleIncludeGroup group);
 }
