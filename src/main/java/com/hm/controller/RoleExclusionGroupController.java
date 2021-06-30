@@ -25,9 +25,8 @@ public class RoleExclusionGroupController {
     }
 
     @RequestMapping("/add")
-    public Response add(@RequestBody RoleExclusionGroup addExclusionGroupData){
-        System.out.println(addExclusionGroupData);
-        roleExclusionGroupService.add(addExclusionGroupData, addExclusionGroupData.getRoleIds());
+    public Response add(@RequestBody RoleExclusionGroup group){
+        roleExclusionGroupService.add(group, group.getRoleIds());
         return Response.success();
     }
 
