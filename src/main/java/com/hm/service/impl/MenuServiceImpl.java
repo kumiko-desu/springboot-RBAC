@@ -3,6 +3,7 @@ package com.hm.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hm.Utils.DataTreeUtil;
+import com.hm.dao.MenuMapper;
 import com.hm.pojo.*;
 import com.hm.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class MenuServiceImpl implements MenuService {
     StringRedisTemplate stringRedisTemplate;
     @Autowired
     ObjectMapper objectMapper;
+    @Autowired
+    MenuMapper menuMapper;
 
     @Override
     public List<Menu> getTreeByUser(User user) {
@@ -47,6 +50,16 @@ public class MenuServiceImpl implements MenuService {
             // 设置用户组根Id为0
             Integer rootMenuId = 0;
             return DataTreeUtil.buildTreeWithoutRoot(menuList, rootMenuId);
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<Menu> getTree() {
+        List<Menu> menus = menuMapper.selectAll();
+        if (menus.size() > 0){
+            Integer rootMenuId = 0;
+            return DataTreeUtil.buildTreeWithoutRoot(menus, rootMenuId);
         }
         return new ArrayList<>();
     }

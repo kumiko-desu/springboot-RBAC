@@ -33,4 +33,9 @@ public class RoleExclusionGroupServiceImpl implements RoleExclusionGroupService 
         return 1;
     }
 
+    @Override
+    public int del(Integer groupId) {
+        return roleExclusionGroupMapper.del(groupId);
+    }
+
 }

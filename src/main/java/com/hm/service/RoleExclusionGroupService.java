@@ -12,4 +12,6 @@ public interface RoleExclusionGroupService {
 
     int add(RoleExclusionGroup group, List<Integer> roleIds);
 
+    int del(Integer groupId);
+
 }

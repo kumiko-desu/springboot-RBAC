@@ -24,4 +24,6 @@ public interface RoleExclusionGroupMapper {
     //大于 1 则 roleIds 存在互斥角色
     public int exclusion(@Param("groupId") Integer groupId, @Param("roleIds") List<Integer> roleIds);
 
+    @Delete("delete from Role_exclusion_group where group_id = #{groupId}")
+    public int del(@Param("groupId") Integer groupId);
 }
