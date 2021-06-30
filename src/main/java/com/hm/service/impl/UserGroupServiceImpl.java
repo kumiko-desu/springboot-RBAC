@@ -33,7 +33,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
     
     @Override
-    public Boolean add(UserGroup userGroup){
+    public int add(UserGroup userGroup){
         return userGroupMapper.add(userGroup);
     }
 }

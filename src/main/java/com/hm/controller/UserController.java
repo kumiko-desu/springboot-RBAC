@@ -21,8 +21,13 @@ public class UserController {
     @Autowired
     RoleServiceImpl roleService;
 
+    @RequestMapping("/all")
+    public Response<List<User>> getAll(){
+        return Response.success(userService.selectAll());
+    }
+
     @RequestMapping("")
-    public Response<List<User>> getUserListByGroupId(Integer groupId){
+    public Response<List<User>> getByGroupId(Integer groupId){
         return Response.success(userService.getByGroupId(groupId));
     }
 

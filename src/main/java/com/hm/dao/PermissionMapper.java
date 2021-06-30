@@ -17,7 +17,7 @@ public interface PermissionMapper {
     @Delete("delete from permission where id=#{id}")
     int DeletePermissionById(@Param("id") Integer id);
 
-    @Update("update permission set name=#{permission.name},code=#{permission.code} where id=#{id}")
+    @Update("update permission set name=#{permission.name},code=#{permission.code} where id=#{permission.id}")
     int UpdatePermission(@Param("permission") Permission permission);
 
     @Select("select * from permission limit #{start},#{size}")

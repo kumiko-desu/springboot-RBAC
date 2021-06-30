@@ -15,6 +15,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
+    @Override
+    public List<User> selectAll() {
+        return userMapper.selectAll();
+    }
+
     /**
         * @return java.util.List<com.hm.pojo.User>
         * @date 2021/6/25 10:48

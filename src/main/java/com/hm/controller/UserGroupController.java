@@ -25,9 +25,9 @@ public class UserGroupController {
 
     @RequestMapping("/add")
     public Response addGroup(@RequestBody UserGroup userGroup){
-        // 判断数据是否合理
+        // TODO: 判断数据是否合理
 
-        if (userGroupService.add(userGroup)) return Response.success();
+        if (userGroupService.add(userGroup) != 0) return Response.success();
         return Response.fail();
     }
 
