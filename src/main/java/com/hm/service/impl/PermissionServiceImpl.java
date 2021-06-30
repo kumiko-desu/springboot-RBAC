@@ -3,6 +3,7 @@ package com.hm.service.impl;
 import cn.hutool.core.date.DateUtil;
 import com.hm.dao.PermissionMapper;
 import com.hm.pojo.Permission;
+import com.hm.pojo.Role;
 import com.hm.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,12 @@ public class PermissionServiceImpl implements PermissionService {
         }
         return null;
     }
+
+    @Override
+    public List<Permission> findPermissionByRoleId(Integer id){
+        return permissionMapper.getByRoleId(id);
+    }
+
 
     @Override
     public int InsertPermission(Permission permission){

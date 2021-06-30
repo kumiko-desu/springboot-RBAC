@@ -15,6 +15,8 @@ public interface RoleService {
 
     public int insertRole(Role role);
 
+    public List<Role> selectByExclusionGroupId(Integer id);
+
     // 判断 roleIds 是否满足 先决条件
     public Boolean isInclude(List<Integer> roleIds);
     // 判断 roleIds 是否满足 互斥条件

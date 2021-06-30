@@ -19,7 +19,6 @@ public class RoleController {
 
     @GetMapping("/selectRole")
     public Response<List<Role>> selectRole(){
-        System.out.println(roleService.selectRole());
         return Response.success(roleService.selectRole());
     }
 
@@ -39,5 +38,10 @@ public class RoleController {
             return Response.success();
         else
             return Response.fail();
+    }
+
+    @GetMapping("/getExclusionRole/{id}")
+    public Response selectByExclusionGroupId(@PathVariable("id") Integer id){
+        return Response.success(roleService.selectByExclusionGroupId(id));
     }
 }

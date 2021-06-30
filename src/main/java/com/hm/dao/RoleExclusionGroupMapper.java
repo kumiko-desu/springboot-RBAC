@@ -3,11 +3,17 @@ package com.hm.dao;
 import com.hm.pojo.RoleExclusionGroup;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
 @Mapper
 public interface RoleExclusionGroupMapper {
+
+    //获取所有角色组
+    @Select("select * from role_exclusion_group")
+    public List<RoleExclusionGroup> getExclusionGroup();
+
 
     //根据 roleIds（即多个角色） 获取所有包含这些角色的 RoleExclusionGroup
     public List<RoleExclusionGroup> getByRoleIds(@Param("roleIds") List<Integer> roleIds);

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://unpkg.com/element-plus/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-plus/lib/index.full.js"></script>
+    <script src="role.js"></script>
 <!--    <link rel="stylesheet" href="index.css">-->
 <!--    <script src="index.full.js"></script>-->
 
@@ -35,6 +36,9 @@
         }
         .deleteuser{
             float: right;
+        }
+        .exclusion_aside{
+            padding-top: 20px;
         }
 
     </style>
@@ -76,61 +80,115 @@
             </el-menu>
         </el-aside>
         <el-main class="content">
-            <el-container>
-                <el-input v-model="input" style="width:200px;margin-right: 10px" placeholder="请输入内容"></el-input>
-                <el-button>搜索</el-button>
-                <el-button type="primary" @click="add">新增</el-button>
-            </el-container>
-            <el-table class="table"
-                      :data="tableData"
-                      stripe
-                      style="width: 100%">
-                <el-table-column
-                        prop="id"
-                        label="角色ID"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="name"
-                        label="角色名"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="code"
-                        label="角色码">
-                </el-table-column>
-                <el-table-column
-                        prop="createdTime"
-                        label="创建时间">
-                </el-table-column>
-                <el-table-column
-                        prop="maxCount"
-                        label="最大使用人数">
-                </el-table-column>
-                <el-table-column
-                        prop="useCount"
-                        label="已使用人数">
-                </el-table-column>
-                <el-table-column
-                        fixed="right"
-                        label="操作"
-                        width="150">
-                    <template #default="scope">
-                        <el-button type="text" size="small">编辑</el-button>
-                        <el-button @click="deleteRole(scope.row.id)" type="text" size="small">删除</el-button>
-                        <el-button type="text" size="small">权限</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-pagination
-                    background
-                    layout="prev, pager, next"
-                    :total="totalitems"
-                    :page-size="pagesize"
-                    :current-page="currentPage"
-                    @current-change="currentChange"
-            >
-            </el-pagination>
+            <el-collapse v-model="activeNames" @change="handleChange">
+                <el-collapse-item title="角色信息" name="1">
+                    <el-button type="primary" @click="add">新增</el-button>
+                    <el-table class="table"
+                              :data="tableData"
+                              stripe
+                              style="width: 100%">
+                        <el-table-column
+                                prop="id"
+                                label="角色ID"
+                                width="180">
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="角色名"
+                                width="180">
+                        </el-table-column>
+                        <el-table-column
+                                prop="code"
+                                label="角色码">
+                        </el-table-column>
+                        <el-table-column
+                                prop="createdTime"
+                                label="创建时间">
+                        </el-table-column>
+                        <el-table-column
+                                prop="maxCount"
+                                label="最大使用人数">
+                        </el-table-column>
+                        <el-table-column
+                                prop="useCount"
+                                label="已使用人数">
+                        </el-table-column>
+                        <el-table-column
+                                fixed="right"
+                                label="操作"
+                                width="150">
+                            <template #default="scope">
+                                <el-button type="text" size="small">编辑</el-button>
+                                <el-button @click="deleteRole(scope.row.id)" type="text" size="small">删除</el-button>
+                                <el-button type="text" size="small">权限</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-collapse-item>
+
+                        <el-collapse-item title="角色互斥信息" name="2">
+                            <el-container>
+                                <el-aside class="exclusion_aside">
+                                    <el-tree :data="exclusion_tree_data" :props="exclusion_Props" @node-click="handleNodeClickExclusion"></el-tree>
+                                </el-aside>
+                                <el-main>
+                                    <el-button type="primary" @click="add_exclusion">新增</el-button>
+                                    <el-table class="table_exclusion"
+                                              :data="table_Exclusion_Data"
+                                              stripe
+                                              style="width: 100%">
+                                        <el-table-column
+                                                prop="id"
+                                                label="角色ID"
+                                                width="180">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="name"
+                                                label="角色名"
+                                                width="180">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="code"
+                                                label="角色码">
+                                        </el-table-column>
+                                        <el-table-column
+                                                fixed="right"
+                                                label="操作"
+                                                width="150">
+                                            <template #default="scope">
+                                                <el-button type="text" size="small">编辑</el-button>
+                                                <el-button @click="deleteRole(scope.row.id)" type="text" size="small">删除</el-button>
+                                                <el-button type="text" size="small">权限</el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                </el-main>
+                            </el-container>
+                        </el-collapse-item>
+
+                <el-collapse-item title="角色继承信息" name="3">
+                    <div>简化流程：设计简洁直观的操作流程；</div>
+                    <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
+                    <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
+                </el-collapse-item>
+                <el-collapse-item title="角色先决信息" name="4">
+                    <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
+                    <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+                </el-collapse-item>
+                <el-collapse-item title="角色合并信息" name="5">
+                    <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
+                    <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+                </el-collapse-item>
+            </el-collapse>
+<!--            <el-pagination-->
+<!--                    background-->
+<!--                    layout="prev, pager, next"-->
+<!--                    :total="totalitems"-->
+<!--                    :page-size="pagesize"-->
+<!--                    :current-page="currentPage"-->
+<!--                    @current-change="currentChange"-->
+<!--            >-->
+<!--            </el-pagination>-->
         </el-main>
         <el-dialog title="角色信息" v-model="dialogFormVisible">
             <el-form :model="form.addRoleData" :rules="rules" ref="form">
@@ -172,145 +230,9 @@
     </el-container>
 </el-container>
 <script>
-
-    var data = {
-        data(){
-            return {
-                form:{
-                    addRoleData: {
-                        name:"",
-                        code:"",
-                        maxCount:"",
-                    },
-                    value: "",
-                },
-                //角色权限数据
-                rolePermissionData:"",
-                //添加表单dialog显示控制
-                dialogFormVisible:false,
-
-                // 添加角色有关数据
-                tableData:"",
-                treeData:"",
-                treeShow:false,
-                //数据权限选择框
-                options: [{
-                    value: 'all',
-                    label: '全部'
-                }, {
-                    value: 'treeCustomize',
-                    label: '自定义'
-                },],
-
-                treeProps:{
-                    children: 'children',
-                    label: 'name'
-                },
-                //添加角色信息不能为空提示
-                rules:{
-                    name:[{
-                        required:true,message:"请输入角色名",trigger:"blur"
-                    }],
-                    code:[{
-                        required:true,message:"请输入角色码",trigger:"blur"
-                    }],
-                    maxCount:[{
-                        required:true,message:"请输入最大使用人数",trigger:"blur"
-                    },
-                        {
-                            type:'number',message: "必须为数字值",
-                        }],
-                    value:[{
-                        required:true,message:"请选择数据权限",trigger:"change"
-                    }],
-                }
-
-                // totalitems:0,
-                // pagesize: 3,
-                // // totalpages:0,
-                // currentPage:1
-            }
-        },
-        created(){
-            this.loadData();
-        },
-        methods:{
-            //载入角色数据
-            loadData(){
-                axios.get("/selectRole").then(res=>{
-                    this.tableData = res.data.data;
-                    console.log(res.data);
-                    // this.totalitems = res.data.length;
-                })
-                //this.getPageData(this.currentPage,this.pagesize);
-            },
-            // getPageData(v1,v2){
-            //     axios.get("/userforpage?current="+v1+"&size="+v2).then(res=>{
-            //         this.tableData = res.data;
-            //     })
-            // },
-            // currentChange(val){
-            //     this.currentPage = val;
-            //     this.getPageData(val,this.pagesize)
-            // },
-            //打开添加对话框
-            add(){
-                this.getTreeGroup()
-                this.dialogFormVisible=true;
-            },
-            //获取用户组tree数据
-            getTreeGroup(){
-                axios.get("/api/group/user/tree").then(res=>{
-                    this.treeData = res.data.data;
-                })
-            },
-            //自定义显示用户组tree
-            treeCustomize(value){
-                this.form.value = value;
-                console.log(this.form.value)
-                if(value === "treeCustomize"){
-                    this.treeShow = true;
-                }
-                else
-                    this.treeShow = false;
-            },
-            //添加表单提交验证
-            roleConfirmClick(formName){
-                // this.rolePermissionData = this.$refs.userTree.getCheckedNodes()
-                // console.log(this.rolePermissionData)
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        console.log('添加成功');
-                        this.FormCommit();
-                    }
-                });
-            },
-            //提交角色数据
-            FormCommit(){
-                axios.post("/insertRole",this.form.addRoleData).then(res=>{
-                    alert(res);
-                })
-            },
-            //重置添加表单
-            resetForm(formName) {
-                this.treeShow = false;
-                this.$refs[formName].resetFields();
-            },
-            //删除角色
-            deleteRole(id){
-                if(confirm("确定删除此角色？")){
-                    axios.get("/deleteRole/"+id).then(res=>{
-                        alert(res.data);
-                    })
-                }
-
-            }
-        }
-    };
     const app = Vue.createApp(data);
     app.use(ElementPlus)
     app.mount("#app");
-
 </script>
 
 </body>

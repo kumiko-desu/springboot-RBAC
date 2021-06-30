@@ -25,6 +25,16 @@ public class PermissionController {
         }
     }
 
+    @GetMapping("/api/getPermissionsByRoleId/{id}")
+    public Response<List<Permission>> getPermissionsByRoleId(@PathVariable("id") Integer id){
+        List<Permission> allPermissions = permissionService.findPermissionByRoleId(id);
+        if(allPermissions!=null){
+            return Response.success(allPermissions);
+        }else{
+            return Response.fail("get allPermissions failed");
+        }
+    }
+
     @PostMapping("/api/InsertPermission")
     public Response<String> InsertPermission(@RequestBody Permission permission){
         int save= permissionService.InsertPermission(permission);
