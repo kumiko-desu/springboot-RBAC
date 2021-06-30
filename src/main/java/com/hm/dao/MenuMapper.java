@@ -10,6 +10,9 @@ import java.util.List;
 @Mapper
 public interface MenuMapper {
 
+    @Select("select * from Menu")
+    public List<Menu> selectAll();
+
     @Select("select m.* from menu m \n" +
             "LEFT JOIN permission_menu p \n" +
             "on p.menu_id=m.id \n" +

@@ -26,10 +26,8 @@ public class RoleExclusionGroupController {
     }
 
     @RequestMapping("/add")
-    public Response add(@RequestBody Map<String, String> map){
-        List<Integer> roleIds = JSONUtil.toBean(map.get("roleIds"), ArrayList.class);
-        RoleExclusionGroup group = JSONUtil.toBean(map.get("group"), RoleExclusionGroup.class);
-        roleExclusionGroupService.add(group, roleIds);
+    public Response add(@RequestBody RoleExclusionGroup group){
+        roleExclusionGroupService.add(group, group.getRoleIds());
         return Response.success();
     }
 
