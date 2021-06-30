@@ -10,4 +10,6 @@ public interface UserGroupService {
 
     public List<UserGroup> getTree();
 
+    public Boolean add(UserGroup userGroup);
+
 }

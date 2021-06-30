@@ -11,4 +11,16 @@
 <!--        <delete id="deleteRole" parameterType="int">-->
 <!--            delete from role where id = #{id}-->
 <!--        </delete>-->
+    <select id="getRoleExclusion" resultType="role">
+        select * from role
+        where id in
+          (select DISTINCT role_id from role_exclusion_group_item
+           where group_id in
+             (select DISTINCT group_id from role_exclusion_group_item
+              where role_id in (
+                <foreach item="item" index="index" collection="roleIds"
+                         open="(" separator="," close=")">#{item}
+                </foreach>
+                )))
+    </select>
 </mapper>

@@ -32,5 +32,8 @@ public class UserGroupServiceImpl implements UserGroupService {
         return new ArrayList<>();
     }
     
-    
+    @Override
+    public Boolean add(UserGroup userGroup){
+        return userGroupMapper.add(userGroup);
+    }
 }
