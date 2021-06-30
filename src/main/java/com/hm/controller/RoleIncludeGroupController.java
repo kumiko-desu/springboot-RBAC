@@ -1,6 +1,5 @@
 package com.hm.controller;
 
-import cn.hutool.json.JSONUtil;
 import com.hm.pojo.Response;
 import com.hm.pojo.RoleExclusionGroup;
 import com.hm.service.RoleExclusionGroupService;
@@ -13,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/exclusionGroup")
-public class RoleExclusionGroupController {
+@RequestMapping("/includeGroup")
+public class RoleIncludeGroupController {
 
     @Autowired
     RoleExclusionGroupService roleExclusionGroupService;
