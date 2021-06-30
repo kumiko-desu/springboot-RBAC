@@ -48,4 +48,14 @@ public class RoleController {
     public Response selectByExclusionGroupId(@PathVariable("id") Integer id){
         return Response.success(roleService.selectByExclusionGroupId(id));
     }
+
+    @GetMapping("/getIncludeRole/{id}")
+    public Response selectByIncludeGroupId(@PathVariable("id") Integer id){
+        return Response.success(roleService.selectByIncludeGroupId(id));
+    }
+
+    @GetMapping("/getMergeRole/{id}")
+    public Response selectByMergeGroupId(@PathVariable("id") Integer id){
+        return Response.success(roleService.selectByMergeGroupId(id));
+    }
 }

@@ -50,7 +50,7 @@ var data = {
                     required:true,message:"请选择数据权限",trigger:"change"
                 }],
             },
-            //互斥角色信息
+            //互斥
             exclusion_group_id:'',
             table_Exclusion_Data:"",
             exclusion_tree_data:"",
@@ -75,15 +75,33 @@ var data = {
                 }],
             },
 
-            // totalitems:0,
-            // pagesize: 3,
-            // // totalpages:0,
-            // currentPage:1
+            //先决
+            include_group_role:"",
+            include_group_id:"",
+            table_Include_Data:"",
+            include_tree_data:"",
+            include_show:false,
+            include_Props:{
+                label:"name",
+            },
+
+            //合并
+            merge_group_role:"",
+            merge_group_id:"",
+            table_Merge_Data:"",
+            merge_tree_data:"",
+            merge_show:false,
+            merge_Props:{
+                label:"name",
+            },
+
         }
     },
     created(){
         this.loadData();
         this.loadExclusionData();
+        this.loadIncludeData();
+        this.loadMergeData();
     },
     methods:{
         //载入角色数据
@@ -155,9 +173,10 @@ var data = {
                 })
             }
         },
+
         //载入互斥角色组信息数据
         loadExclusionData(){
-            axios.get("/getExclusionGroup").then(res=>{
+            axios.get("/exclusionGroup/get").then(res=>{
                 this.exclusion_tree_data = res.data.data;
                 console.log(this.exclusion_tree_data);
             })
@@ -189,16 +208,69 @@ var data = {
         },
         //提交新增角色组数据
         exclusionFormCommit(){
-            axios.post("/add",this.exclusion_form.addExclusionGroupData).then(res=>{
+            axios.post("/exclusionGroup/add",this.exclusion_form.addExclusionGroupData).then(res=>{
                 alert(res.data.msg)
             })
         },
         exclusionDeleteRole(roleid){
             if(confirm("确定删除此角色？")){
                 console.log(roleid,this.exclusion_group_id)
-                axios.get(""+roleid+this.exclusion_group_id).then(res=>{
+                axios.get("/exclusionGroupItem/del/"+roleid).then(res=>{
                     alert(res.data.msg);
                 })
+            }
+        },
+
+        //先决
+        //载入先决信息
+        loadIncludeData(){
+            axios.get("/includeGroup/get").then(res=>{
+                this.include_tree_data = res.data.data
+                console.log(this.include_tree_data)
+            })
+        },
+
+        handleNodeClickInclude(data){
+            this.include_group_id = data.id;
+            axios.get("/getIncludeRole/"+this.include_group_id).then(res=>{
+                this.table_Include_Data = res.data.data;
+            })
+        },
+        add_include(){
+            this.include_show = true;
+        },
+
+        //合并
+        //载入合并信息
+        loadMergeData(){
+            axios.get("/mergeGroup/get").then(res=>{
+                this.merge_tree_data = res.data.data
+                console.log(this.merge_tree_data)
+            })
+        },
+
+        handleNodeClickMerge(data){
+            this.merge_group_id = data.id;
+            axios.get("/getMergeRole/"+this.merge_group_id).then(res=>{
+                this.table_Merge_Data = res.data.data;
+            })
+        },
+        add_include(){
+            this.merge_show = true;
+        },
+
+
+
+        roleManage(index){
+            if(index==2){
+                window.location.href="http://localhost:80/role.html"
+                //window.location.href="role.html"
+            }
+            if(index==1){
+                window.location.href="user1.html"
+            }
+            if(index==4){
+                window.location.href="menu.html"
             }
         }
     }

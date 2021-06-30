@@ -11,8 +11,6 @@
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-plus/lib/index.full.js"></script>
     <script src="role.js"></script>
-<!--    <link rel="stylesheet" href="index.css">-->
-<!--    <script src="index.full.js"></script>-->
 
     <style>
         .header{
@@ -42,6 +40,7 @@
         }
 
     </style>
+
 </head>
 <body id="app">
 <el-container>
@@ -180,29 +179,85 @@
                     </el-container>
                 </el-collapse-item>
 
-                <el-collapse-item title="角色继承信息" name="3">
-                    <div>简化流程：设计简洁直观的操作流程；</div>
-                    <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
-                    <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
+                <el-collapse-item title="角色先决信息" name="3">
+                    <el-container>
+                        <el-aside class="exclusion_aside">
+                            <el-tree :data="include_tree_data" :props="include_Props" @node-click="handleNodeClickInclude"></el-tree>
+                        </el-aside>
+                        <el-main>
+                            <el-button type="primary" @click="add_include">新增</el-button>
+                            <el-table class="table_exclusion table"
+                                      :data="table_Include_Data"
+                                      stripe
+                                      style="width: 100%">
+                                <el-table-column
+                                        prop="id"
+                                        label="角色ID"
+                                        width="180">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="name"
+                                        label="角色名"
+                                        width="180">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="code"
+                                        label="角色码">
+                                </el-table-column>
+                                <el-table-column
+                                        fixed="right"
+                                        label="操作"
+                                        width="150">
+                                    <template #default="scope">
+                                        <el-button type="text" size="small">编辑</el-button>
+                                        <el-button @click="includeDeleteRole(scope.row.id)" type="text" size="small">删除</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </el-main>
+                    </el-container>
                 </el-collapse-item>
-                <el-collapse-item title="角色先决信息" name="4">
-                    <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-                    <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
-                </el-collapse-item>
-                <el-collapse-item title="角色合并信息" name="5">
-                    <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-                    <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+
+                <el-collapse-item title="角色合并信息" name="4">
+                    <el-container>
+                        <el-aside class="merge_aside">
+                            <el-tree :data="merge_tree_data" :props="merge_Props" @node-click="handleNodeClickMerge"></el-tree>
+                        </el-aside>
+                        <el-main>
+                            <el-button type="primary" @click="add_merge">新增</el-button>
+                            <el-table class="table_exclusion table"
+                                      :data="table_Merge_Data"
+                                      stripe
+                                      style="width: 100%">
+                                <el-table-column
+                                        prop="id"
+                                        label="角色ID"
+                                        width="180">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="name"
+                                        label="角色名"
+                                        width="180">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="code"
+                                        label="角色码">
+                                </el-table-column>
+                                <el-table-column
+                                        fixed="right"
+                                        label="操作"
+                                        width="150">
+                                    <template #default="scope">
+                                        <el-button type="text" size="small">编辑</el-button>
+                                        <el-button @click="mergeDeleteRole(scope.row.id)" type="text" size="small">删除</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </el-main>
+                    </el-container>
                 </el-collapse-item>
             </el-collapse>
-<!--            <el-pagination-->
-<!--                    background-->
-<!--                    layout="prev, pager, next"-->
-<!--                    :total="totalitems"-->
-<!--                    :page-size="pagesize"-->
-<!--                    :current-page="currentPage"-->
-<!--                    @current-change="currentChange"-->
-<!--            >-->
-<!--            </el-pagination>-->
+
         </el-main>
 
 <!--        添加角色-->
@@ -248,6 +303,51 @@
             <el-form :model="exclusion_form.addExclusionGroupData" :rules="exclusion_rules" ref="exclusion_form">
                 <el-form-item label="互斥角色组名" :label-width="formLabelWidth" prop="name">
                     <el-input v-model="exclusion_form.addExclusionGroupData.name" placeholder="请输入互斥角色组名" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="互斥角色组描述" :label-width="formLabelWidth" prop="description">
+                    <el-input v-model="exclusion_form.addExclusionGroupData.description" placeholder="请输入互斥角色组描述" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="选择互斥角色" :label-width="formLabelWidth" prop="role">
+                    <el-select v-model="exclusion_form.addExclusionGroupData.roleIds" multiple placeholder="请选择">
+                        <el-option
+                                v-for="item in tableData"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <!--                <el-form-item label="选择数据权限" :label-width="formLabelWidth" prop="value">-->
+                <!--                    <el-select v-model="form.value" placeholder="请选择数据权限" @change="treeCustomize">-->
+                <!--                        <el-option-->
+                <!--                                v-for="item in options"-->
+                <!--                                :key="item.value"-->
+                <!--                                :label="item.label"-->
+                <!--                                :value="item.value"-->
+                <!--                        >-->
+                <!--                        </el-option>-->
+                <!--                    </el-select>-->
+                <!--                </el-form-item>-->
+
+            </el-form>
+            <el-tree ref="userTree" v-if="treeShow" :data="treeData" :props="treeProps" node-key="id"
+                     @node-click="handleNodeClick"
+                     show-checkbox
+                     @check-change="handleNodeClick"
+            ></el-tree>
+            <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="exclusion_resetForm('exclusion_form')">重 置</el-button>
+                  <el-button type="primary" @click="exclusion_roleConfirmClick('exclusion_form')">确 定</el-button>
+                </span>
+            </template>
+        </el-dialog>
+
+        <el-dialog title="角色先决组信息" v-model="include_show">
+            <el-form :model="exclusion_form.addExclusionGroupData" :rules="exclusion_rules" ref="exclusion_form">
+                <el-form-item label="互斥角色组名" :label-width="formLabelWidth" prop="name">
+                    <el-input v-model="exclusion_form.addExclusionGroupData.name" placeholder="请输入先决角色组名" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="互斥角色组描述" :label-width="formLabelWidth" prop="description">
                     <el-input v-model="exclusion_form.addExclusionGroupData.description" placeholder="请输入互斥角色组描述" autocomplete="off"></el-input>

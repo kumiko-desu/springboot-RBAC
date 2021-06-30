@@ -49,6 +49,16 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public List<Role> selectByIncludeGroupId(Integer id){
+        return roleMapper.selectByIncludeGroupId(id);
+    }
+
+    @Override
+    public List<Role> selectByMergeGroupId(Integer id){
+        return roleMapper.selectByMergeGroupId(id);
+    }
+
+    @Override
     public Boolean isInclude(List<Integer> roleIds) {
         for (Integer roleId : roleIds) {
             RoleIncludeGroup includeGroup = roleIncludeGroupMapper.getByRoleId(roleId);
