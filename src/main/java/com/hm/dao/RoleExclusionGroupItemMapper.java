@@ -9,4 +9,6 @@ import java.util.List;
 @Mapper
 public interface RoleExclusionGroupItemMapper {
 
+    public int add(@Param("groupId") Integer groupId, @Param("roleIds") List<Integer> roleIds);
+
 }

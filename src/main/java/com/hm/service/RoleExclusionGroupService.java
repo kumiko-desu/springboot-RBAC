@@ -10,4 +10,6 @@ public interface RoleExclusionGroupService {
 
     List<RoleExclusionGroup> getExclusionGroup();
 
+    int add(RoleExclusionGroup group, List<Integer> roleIds);
+
 }

@@ -1,14 +1,18 @@
 package com.hm.controller;
 
+import cn.hutool.json.JSONUtil;
 import com.hm.pojo.Response;
 import com.hm.pojo.RoleExclusionGroup;
 import com.hm.service.RoleExclusionGroupService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class RoleExclusionGroupController {
@@ -19,6 +23,14 @@ public class RoleExclusionGroupController {
     @GetMapping("/getExclusionGroup")
     public Response<List<RoleExclusionGroup>> getExclusionGroup(){
         return Response.success(roleExclusionGroupService.getExclusionGroup());
-    };
+    }
+
+    @RequestMapping("/add")
+    public Response add(@RequestBody Map<String, String> map){
+        List<Integer> roleIds = JSONUtil.toBean(map.get("roleIds"), ArrayList.class);
+        RoleExclusionGroup group = JSONUtil.toBean(map.get("group"), RoleExclusionGroup.class);
+        roleExclusionGroupService.add(group, roleIds);
+        return Response.success();
+    }
 
 }

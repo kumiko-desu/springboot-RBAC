@@ -1,9 +1,7 @@
 package com.hm.dao;
 
 import com.hm.pojo.RoleExclusionGroup;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -14,6 +12,10 @@ public interface RoleExclusionGroupMapper {
     @Select("select * from role_exclusion_group")
     public List<RoleExclusionGroup> getExclusionGroup();
 
+    @Insert("insert into role_exclusion_group(name, description) \n" +
+            "values (#{group.name}, #{group.description})")
+    @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
+    public int add(@Param("group") RoleExclusionGroup group);
 
     //根据 roleIds（即多个角色） 获取所有包含这些角色的 RoleExclusionGroup
     public List<RoleExclusionGroup> getByRoleIds(@Param("roleIds") List<Integer> roleIds);
