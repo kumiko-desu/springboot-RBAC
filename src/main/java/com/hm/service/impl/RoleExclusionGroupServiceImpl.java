@@ -27,7 +27,10 @@ public class RoleExclusionGroupServiceImpl implements RoleExclusionGroupService 
     public int add(RoleExclusionGroup group, List<Integer> roleIds) {
         roleExclusionGroupMapper.add(group);
         Integer groupId = group.getId();
-        return roleExclusionGroupItemMapper.add(groupId, roleIds);
+        for (Integer roleId : roleIds) {
+            roleExclusionGroupItemMapper.add(groupId, roleId);
+        }
+        return 1;
     }
 
 }
