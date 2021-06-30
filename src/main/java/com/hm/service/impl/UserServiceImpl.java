@@ -7,6 +7,7 @@ import com.hm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -47,6 +48,7 @@ public class UserServiceImpl implements UserService {
     */
     @Override
     public void addUser(User user) {
+        user.setCreatedTime(new Date());
         userMapper.insertOne(user);
         userMapper.insertUserRole(user.getId(), user.getRoleIds());
     }

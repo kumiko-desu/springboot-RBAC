@@ -91,6 +91,41 @@
                   </el-table-column>
               </el-table>
           </el-main>
+            <!--        添加用户-->
+            <el-dialog title="用户信息" v-model="dialogFormVisible">
+                <el-form :model="user" :rules="rules" ref="form">
+                    <el-form-item label="用户名" :label-width="formLabelWidth" prop="username">
+                        <el-input v-model="user.username" placeholder="请输入用户名" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
+                        <el-input v-model="user.password" placeholder="请输入密码" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="所属用户组" :label-width="formLabelWidth" prop="groupId">
+                        <el-select v-model="groupName" placeholder="请输入所选用户组">
+                            <el-option :value="data" style="height: auto">
+                                <el-tree :data="data" :props="defaultProps" @node-click="groupChange"
+                                :expand-on-click-node="false"></el-tree>
+                            </el-option>
+
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="年龄" :label-width="formLabelWidth" prop="old">
+                        <el-input v-model="user.old" placeholder="请输入年龄" autocomplete="off"></el-input>
+                    </el-form-item>
+<!--                    <el-form-item label="角色" :label-width="formLabelWidth" prop="roleIds">-->
+<!--                        <el-select v-model="user.roleIds" placeholder="请选择角色" autocomplete="off">-->
+<!--                            <el-option label="区域一" value="shanghai"></el-option>-->
+<!--                            <el-option label="区域二" value="beijing"></el-option>-->
+<!--                        </el-select>-->
+<!--                    </el-form-item>-->
+                </el-form>
+                <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="resetForm('user')">重 置</el-button>
+                  <el-button type="primary" @click="insertData()">确 定</el-button>
+                </span>
+                </template>
+            </el-dialog>
         </el-container>
     </div>
   </div>
@@ -99,17 +134,53 @@
   var Main = {
     data() {
       return {
-        data: [],
+          data: [],
           tableData:[],
-        defaultProps: {
-          children: 'children',
-          label: 'name'
-        }
+          user:{
+              username: "",
+              password: "",
+              old: "",
+              groupId: "",
+              roleIds: [1, 2],
+          },
+          groupName: "",
+          defaultProps: {
+              children: 'children',
+              label: 'name',
+          },
+          //添加表单dialog显示控制
+          dialogFormVisible:false,
+          //添加角色信息不能为空提示
+          rules:{
+              username:[{
+                  required:true,message:"请输入用户名",trigger:"blur"
+              }],
+              password:[{
+                  required:true,message:"请输入密码",trigger:"blur"
+              }],
+              groupId:[{
+                  required:true,message:"请选择用户组",trigger:"blur"
+              }],
+              old:[{
+                  required:true,message:"请输入年龄",trigger:"blur"
+              }],
+              roleIds:[{
+                  required:true,message:"请选择角色",trigger:"blur"
+              }],
+              maxCount:[{
+                  required:true,message:"请输入最大使用人数",trigger:"blur"
+              },
+                  {
+                      type:'number',message: "必须为数字值",
+                  }],
+              value:[{
+                  required:true,message:"请选择数据权限",trigger:"change"
+              }],
+          },
       };
     },
     created(){
       this.loadData();
-      this.loadData1();
     },
     methods: {
       loadData(){
@@ -118,19 +189,28 @@
           console.log(res);
         })
       },
-        loadData1(){
-            axios.get("http://localhost:80/api/group/user/tree").then(res=>{
-                this.data=res.data.data;
-                console.log(res);
-            })
-        },
+      insertData(){
+          axios.post("/api/user/add",this.user).then(res=>{
+              alert(res.data.msg);
+          })
+      },
       handleNodeClick(data) {
+
           axios.get("http://localhost:80/api/user?groupId="+data.id).then(res=>{
               this.tableData=res.data.data;
               console.log(res);
               console.log(data);
       })
-      }
+      },
+        //打开添加对话框
+        add(){
+            this.dialogFormVisible=true;
+        },
+        // 选择用户组
+        groupChange(data,node,nodeData){
+            this.groupName = data.name;
+            this.user.groupId = data.id;
+        },
     }
   };
   const app = Vue.createApp(Main);

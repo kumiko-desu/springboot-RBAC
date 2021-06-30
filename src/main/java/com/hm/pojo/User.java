@@ -21,5 +21,5 @@ public class User {
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date lastLoginTime;
 
-    List<Integer> roleIds;
+    private List<Integer> roleIds;
 }
