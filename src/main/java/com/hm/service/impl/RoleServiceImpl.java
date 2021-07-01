@@ -84,20 +84,22 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> allowSelect(List<Integer> roleIds) {
         // 返回 role 列表 ( 先获取所有角色 )
         List<Role> roleList = roleMapper.selectRole();
-        // 删除互斥角色
-        roleList.removeAll(roleMapper.getRoleExclusion(roleIds));
-        // 删除不满足先决条件的角色
-        List<RoleIncludeGroup> includeGroups = roleIncludeGroupMapper.getByRoleIds(roleIds);
-        for (RoleIncludeGroup includeGroup : includeGroups) {
-            Integer groupId = includeGroup.getId();
-            Integer roleId = includeGroup.getRoleId();
-            // 1 为 (或 or)
-            if(includeGroup.getType()){
-                if (roleIncludeGroupMapper.includeOr(groupId, roleIds) == 0)
-                    roleList.removeIf(r -> r.getId() == roleId);
-            }else{ // 0 为 (且 and)
-                if (roleIncludeGroupMapper.includeAnd(groupId, roleIds) != 0)
-                    roleList.removeIf(r -> r.getId() == roleId);
+        if(!roleIds.isEmpty()) {
+            // 删除互斥角色
+            roleList.removeAll(roleMapper.getRoleExclusion(roleIds));
+            // 删除不满足先决条件的角色
+            List<RoleIncludeGroup> includeGroups = roleIncludeGroupMapper.getByRoleIds(roleIds);
+            for (RoleIncludeGroup includeGroup : includeGroups) {
+                Integer groupId = includeGroup.getId();
+                Integer roleId = includeGroup.getRoleId();
+                // 1 为 (或 or)
+                if(includeGroup.getType()){
+                    if (roleIncludeGroupMapper.includeOr(groupId, roleIds) == 0)
+                        roleList.removeIf(r -> r.getId() == roleId);
+                }else{ // 0 为 (且 and)
+                    if (roleIncludeGroupMapper.includeAnd(groupId, roleIds) != 0)
+                        roleList.removeIf(r -> r.getId() == roleId);
+                }
             }
         }
         return roleList;

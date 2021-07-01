@@ -58,4 +58,9 @@ public class RoleController {
     public Response selectByMergeGroupId(@PathVariable("id") Integer id){
         return Response.success(roleService.selectByMergeGroupId(id));
     }
+
+    @RequestMapping("/getAllowSelectRoles")
+    public Response<List<Role>> getAllowSelectRole(@RequestBody List<Integer> roleIds){
+        return Response.success(roleService.allowSelect(roleIds));
+    }
 }
