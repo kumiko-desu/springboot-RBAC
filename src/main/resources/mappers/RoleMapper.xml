@@ -17,10 +17,10 @@
           (select DISTINCT role_id from role_exclusion_group_item
            where group_id in
              (select DISTINCT group_id from role_exclusion_group_item
-              where role_id in (
+              where role_id in
                 <foreach item="item" index="index" collection="roleIds"
                          open="(" separator="," close=")">#{item}
                 </foreach>
-                )))
+                ))
     </select>
 </mapper>

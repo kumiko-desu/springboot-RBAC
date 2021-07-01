@@ -18,7 +18,7 @@ public interface UserMapper {
     @Select("select * from user where group_id = #{groupId}")
     public List<User> selectByGroupId(Integer groupId);
 
-    @Insert("insert into user(username, salt, password, name, sex, old, group_id, created_time) \n" +
+    @Insert("insert into user(username, password, salt, name, sex, old, group_id, created_time) \n" +
             "values (#{user.username}, #{user.password}, #{user.salt}, #{user.name}, #{user.sex}, #{user.old}, #{user.groupId}, #{user.createdTime})")
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     public int insertOne(@Param("user") User user);

@@ -13,8 +13,8 @@ public class RoleExclusionGroupItemServiceImpl implements RoleExclusionGroupItem
     RoleExclusionGroupItemMapper roleExclusionGroupItemMapper;
 
     @Override
-    public int delete(Integer id){
-        return roleExclusionGroupItemMapper.delete(id);
+    public int delete(Integer id,Integer groupid){
+        return roleExclusionGroupItemMapper.delete(id,groupid);
     }
 
 }

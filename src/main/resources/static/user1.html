@@ -186,12 +186,20 @@
                     <el-form-item label="年龄" :label-width="formLabelWidth" prop="old">
                         <el-input v-model="user.old" placeholder="请输入年龄" autocomplete="off"></el-input>
                     </el-form-item>
-<!--                    <el-form-item label="角色" :label-width="formLabelWidth" prop="roleIds">-->
-<!--                        <el-select v-model="user.roleIds" placeholder="请选择角色" autocomplete="off">-->
-<!--                            <el-option label="区域一" value="shanghai"></el-option>-->
-<!--                            <el-option label="区域二" value="beijing"></el-option>-->
-<!--                        </el-select>-->
-<!--                    </el-form-item>-->
+                    <el-form-item label="角色" :label-width="formLabelWidth" prop="roleIds">
+                        <el-select
+                                v-model="selectRoles"
+                                multiple
+                                placeholder="请选择角色"
+                                @change="selectChange">
+                            <el-option
+                                v-for="item in roles"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                 </el-form>
                 <template #footer>
                 <span class="dialog-footer">
@@ -308,6 +316,8 @@
   var Main = {
     data() {
       return {
+          selectRoles: [],
+          roles: [],
           data: [],
           tableData:[],
           user:{
@@ -315,7 +325,7 @@
               password: "",
               old: "",
               groupId: "",
-              roleIds: [1, 2],
+              roleIds: [],
           },
           groupName: "",
           defaultProps: {
@@ -356,9 +366,15 @@
     created(){
       this.loadData();
       this.getAllUser();
+        this.loadData();
+        axios.post("http://localhost/getAllowSelectRoles", []).then(res=>{
+            this.roles = res.data.data;
+            console.log(res);
+            console.log(data);
+        });
     },
     methods: {
-      loadData(){
+        loadData(){
         axios.get("http://localhost:80/api/group/user/tree").then(res=>{
           this.data=res.data.data;
           console.log(res);
@@ -375,37 +391,45 @@
           axios.post("/api/user/add",this.user).then(res=>{
               alert(res.data.msg);
           })
-      },
-      handleNodeClick(data) {
-
+        },
+        handleNodeClick(data) {
           axios.get("http://localhost:80/api/user?groupId="+data.id).then(res=>{
               this.tableData=res.data.data;
               console.log(res);
               console.log(data);
-      })
-      },
-    roleManage(index){
-        if(index==2){
-            // window.location.href="http://localhost:80/role.html"
-            window.location.href="role.html"
-        }
-        if(index==1){
-            window.location.href="user1.html"
-        }
-        if(index==4){
-            window.location.href="menu.html"
-        }
-    },
+            })
+        },
+        roleManage(index){
+          if(index==2){
+              // window.location.href="http://localhost:80/role.html"
+              window.location.href="role.html"
+          }
+          if(index==1){
+              window.location.href="user1.html"
+          }
+          if(index==4){
+              window.location.href="menu.html"
+          }
+        },
         //打开添加对话框
         add(){
-            this.dialogFormVisible=true;
+          this.dialogFormVisible=true;
         },
         // 选择用户组
         groupChange(data,node,nodeData){
-            this.groupName = data.name;
-            this.user.groupId = data.id;
+          this.groupName = data.name;
+          this.user.groupId = data.id;
         },
-      },
+        selectChange(roleIds) {
+            this.user.roleIds = roleIds;
+            axios.post("http://localhost/getAllowSelectRoles",roleIds).then(res=>{
+                this.roles = res.data.data;
+                console.log(res);
+                console.log(data);
+            })
+
+        },
+    },
 
   };
   const app = Vue.createApp(Main);
