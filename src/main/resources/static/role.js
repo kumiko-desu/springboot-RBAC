@@ -108,40 +108,13 @@ var data = {
         loadData(){
             axios.get("/selectRole").then(res=>{
                 this.tableData = res.data.data;
-                console.log(res.data);
                 // this.totalitems = res.data.length;
             })
             //this.getPageData(this.currentPage,this.pagesize);
         },
-        // getPageData(v1,v2){
-        //     axios.get("/userforpage?current="+v1+"&size="+v2).then(res=>{
-        //         this.tableData = res.data;
-        //     })
-        // },
-        // currentChange(val){
-        //     this.currentPage = val;
-        //     this.getPageData(val,this.pagesize)
-        // },
         //打开添加对话框
         add(){
-            this.getTreeGroup()
             this.dialogFormVisible=true;
-        },
-        //获取用户组tree数据
-        getTreeGroup(){
-            axios.get("/api/group/user/tree").then(res=>{
-                this.treeData = res.data.data;
-            })
-        },
-        //自定义显示用户组tree
-        treeCustomize(value){
-            this.form.value = value;
-            console.log(this.form.value)
-            if(value === "treeCustomize"){
-                this.treeShow = true;
-            }
-            else
-                this.treeShow = false;
         },
         //添加表单提交验证
         roleConfirmClick(formName){
@@ -158,11 +131,12 @@ var data = {
         FormCommit(){
             axios.post("/insertRole",this.form.addRoleData).then(res=>{
                 alert(res.data.msg);
+                this.dialogFormVisible = false;
+                this.loadData();
             })
         },
         //重置添加表单
         resetForm(formName) {
-            this.treeShow = false;
             this.$refs[formName].resetFields();
         },
         //删除角色
@@ -170,6 +144,7 @@ var data = {
             if(confirm("确定删除此角色？")){
                 axios.get("/deleteRole/"+id).then(res=>{
                     alert(res.data.msg);
+                    this.loadData();
                 })
             }
         },
@@ -178,7 +153,6 @@ var data = {
         loadExclusionData(){
             axios.get("/exclusionGroup/get").then(res=>{
                 this.exclusion_tree_data = res.data.data;
-                console.log(this.exclusion_tree_data);
             })
         },
         //点击互斥组显示其包含角色
@@ -194,7 +168,6 @@ var data = {
         },
         //重置新增角色组dialog
         exclusion_resetForm(formName){
-            console.log(this.exclusion_form.role)
             this.$refs[formName].resetFields();
         },
         //提交新增角色组表单进行验证
@@ -210,13 +183,15 @@ var data = {
         exclusionFormCommit(){
             axios.post("/exclusionGroup/add",this.exclusion_form.addExclusionGroupData).then(res=>{
                 alert(res.data.msg)
+                this.exclusion_show = false
+                this.loadExclusionData()
             })
         },
         exclusionDeleteRole(roleid){
             if(confirm("确定删除此角色？")){
-                console.log(roleid,this.exclusion_group_id)
-                axios.get("/exclusionGroupItem/del/"+roleid).then(res=>{
+                axios.get("/exclusionGroupItem/del/"+roleid+"/"+this.exclusion_group_id).then(res=>{
                     alert(res.data.msg);
+                    this.loadExclusionData()
                 })
             }
         },
@@ -226,7 +201,6 @@ var data = {
         loadIncludeData(){
             axios.get("/includeGroup/get").then(res=>{
                 this.include_tree_data = res.data.data
-                console.log(this.include_tree_data)
             })
         },
 
@@ -245,7 +219,6 @@ var data = {
         loadMergeData(){
             axios.get("/mergeGroup/get").then(res=>{
                 this.merge_tree_data = res.data.data
-                console.log(this.merge_tree_data)
             })
         },
 

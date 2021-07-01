@@ -132,9 +132,7 @@
                                 label="操作"
                                 width="150">
                             <template #default="scope">
-                                <el-button type="text" size="small">编辑</el-button>
                                 <el-button @click="deleteRole(scope.row.id)" type="text" size="small">删除</el-button>
-                                <el-button type="text" size="small">权限</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -170,7 +168,6 @@
                                         label="操作"
                                         width="150">
                                     <template #default="scope">
-                                        <el-button type="text" size="small">编辑</el-button>
                                         <el-button @click="exclusionDeleteRole(scope.row.id)" type="text" size="small">删除</el-button>
                                     </template>
                                 </el-table-column>
@@ -209,7 +206,6 @@
                                         label="操作"
                                         width="150">
                                     <template #default="scope">
-                                        <el-button type="text" size="small">编辑</el-button>
                                         <el-button @click="includeDeleteRole(scope.row.id)" type="text" size="small">删除</el-button>
                                     </template>
                                 </el-table-column>
@@ -248,7 +244,6 @@
                                         label="操作"
                                         width="150">
                                     <template #default="scope">
-                                        <el-button type="text" size="small">编辑</el-button>
                                         <el-button @click="mergeDeleteRole(scope.row.id)" type="text" size="small">删除</el-button>
                                     </template>
                                 </el-table-column>
@@ -273,24 +268,12 @@
                     <el-input v-model.number="form.addRoleData.maxCount" placeholder="请输入该角色最大使用人数" autocomplete="off"></el-input>
                 </el-form-item>
 
-<!--                <el-form-item label="选择数据权限" :label-width="formLabelWidth" prop="value">-->
-<!--                    <el-select v-model="form.value" placeholder="请选择数据权限" @change="treeCustomize">-->
-<!--                        <el-option-->
-<!--                                v-for="item in options"-->
-<!--                                :key="item.value"-->
-<!--                                :label="item.label"-->
-<!--                                :value="item.value"-->
-<!--                        >-->
-<!--                        </el-option>-->
-<!--                    </el-select>-->
-<!--                </el-form-item>-->
-
             </el-form>
-            <el-tree ref="userTree" v-if="treeShow" :data="treeData" :props="treeProps" node-key="id"
-                     @node-click="handleNodeClick"
-                     show-checkbox
-                     @check-change="handleNodeClick"
-            ></el-tree>
+<!--            <el-tree ref="userTree" v-if="treeShow" :data="treeData" :props="treeProps" node-key="id"-->
+<!--                     @node-click="handleNodeClick"-->
+<!--                     show-checkbox-->
+<!--                     @check-change="handleNodeClick"-->
+<!--            ></el-tree>-->
             <template #footer>
                 <span class="dialog-footer">
                   <el-button @click="resetForm('form')">重 置</el-button>

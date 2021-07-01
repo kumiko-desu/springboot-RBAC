@@ -1,6 +1,7 @@
 package com.hm.dao;
 
 import com.hm.pojo.Menu;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -19,4 +20,9 @@ public interface MenuMapper {
             "where p.permission_id = #{permissionId}")
     public List<Menu> getByPermissionId(@Param("permissionId") Integer permissionId);
 
+    @Select("select * from menu")
+    public List<Menu> getMenu();
+
+    @Insert("insert into menu (name,path,link_type,description,parent_id) value (#{menu.name},#{menu.path},#{menu.linkType},#{menu.description},#{menu.parentId})")
+    public int addMenu(@Param("menu") Menu menu);
 }

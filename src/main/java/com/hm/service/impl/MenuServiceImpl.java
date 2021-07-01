@@ -63,4 +63,15 @@ public class MenuServiceImpl implements MenuService {
         }
         return new ArrayList<>();
     }
+
+    @Override
+    public List<Menu> getMenu(){
+        return menuMapper.getMenu();
+    }
+
+    @Override
+    public int addMenu(Menu menu){
+        menu.setLinkType(0);
+        return menuMapper.addMenu(menu);
+    }
 }
