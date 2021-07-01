@@ -17,6 +17,8 @@ public interface RoleService {
 
     public int insertRole(Role role);
 
+    public int insertRolePermission(Integer roleId, List<Integer> permissionIds);
+
     public List<Role> selectByExclusionGroupId(Integer id);
 
     public List<Role> selectByIncludeGroupId(Integer id);

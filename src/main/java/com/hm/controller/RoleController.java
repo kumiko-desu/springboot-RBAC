@@ -44,6 +44,14 @@ public class RoleController {
             return Response.fail();
     }
 
+    @PostMapping("/insertRolePermission")
+    public Response insertRolePermission(Integer roleId, List<Integer> permissionIds){
+        if(roleService.insertRolePermission(roleId, permissionIds)>0)
+            return Response.success();
+        else
+            return Response.fail();
+    }
+
     @GetMapping("/getExclusionRole/{id}")
     public Response selectByExclusionGroupId(@PathVariable("id") Integer id){
         return Response.success(roleService.selectByExclusionGroupId(id));

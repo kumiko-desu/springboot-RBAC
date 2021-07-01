@@ -42,9 +42,12 @@ public class RoleServiceImpl implements RoleService {
     public int insertRole(Role role){
         Date date = new Date();
         role.setCreatedTime(date);
-        List<Integer> permissionIds = role.getPermissions().stream().map(Permission::getId).collect(Collectors.toList());
-        roleMapper.insertRolePermission(role.getId(), permissionIds);
+
         return roleMapper.insertRole(role);
+    }
+    @Override
+    public int insertRolePermission(Integer roleId, List<Integer> permissionIds){
+        return roleMapper.insertRolePermission(roleId, permissionIds);
     }
 
     @Override
