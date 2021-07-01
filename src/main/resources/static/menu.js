@@ -19,9 +19,6 @@ const data = {
                 path:[{
                     required:true,message:"请输入菜单路径",trigger:"blur"
                 }],
-                parentId: [{
-                    required:true,message:"请选择父菜单",trigger:"change"
-                }]
             },
             menu_options:[]
         }
@@ -64,6 +61,7 @@ const data = {
                 alert(res.data.msg);
                 this.menu_show = false
                 this.loadMenuTreeData();
+                this.loadMenuData();
             })
         },
 

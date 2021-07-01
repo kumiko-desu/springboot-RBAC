@@ -73,7 +73,7 @@
                         axios.post("/oauth/login",this.loginForm).then(res=>{
                             console.log(res)
                             if(res.data.code==200){
-                                location.href="/user1.html";
+                                location.href="/main.html";
                             }else{
                                 alert(res.data.msg)
                             }

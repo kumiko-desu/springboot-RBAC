@@ -71,6 +71,8 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public int addMenu(Menu menu){
+        if(menu.getParentId()==null)
+            menu.setParentId(0);
         menu.setLinkType(0);
         return menuMapper.addMenu(menu);
     }
