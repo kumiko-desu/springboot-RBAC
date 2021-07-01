@@ -13,4 +13,8 @@ public interface MenuService {
     // 获取所有菜单
     public List<Menu> getTree();
 
+    //获取所有菜单(非树)
+    public List<Menu> getMenu();
+
+    public int addMenu(Menu menu);
 }
