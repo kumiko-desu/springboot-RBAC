@@ -12,8 +12,8 @@ public interface UserMapper {
     @Select("select * from user")
     public List<User> selectAll();
 
-    @Select("select * from user where username = #{userName}")
-    public User selectByUserName(String username);
+    @Select("select * from user where username = #{username}")
+    public User selectByUserName(@Param("username") String username);
 
     @Select("select * from user where group_id = #{groupId}")
     public List<User> selectByGroupId(Integer groupId);

@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
         * @description 根据用户名获取一个用户
     */
     @Override
-    public User getByUserName(String userName) {
-        return userMapper.selectByUserName(userName);
+    public User getByUserName(String username) {
+        return userMapper.selectByUserName(username);
     }
 
     /**

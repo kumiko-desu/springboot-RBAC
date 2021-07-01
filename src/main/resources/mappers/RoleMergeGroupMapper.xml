@@ -15,7 +15,7 @@
         </foreach>)
     </select>
 
-    <select id="notNeedMerge" resultType="int">
+    <select id="needMerge" resultType="int">
         select (
         (select count(1) from role_merge_group_item
         where group_id = #{groupId}

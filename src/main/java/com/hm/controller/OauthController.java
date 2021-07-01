@@ -31,10 +31,11 @@ public class OauthController {
             return Response.fail("用户名或者密码不能为空");
         }
         //获取用户
-        User userByName = userService.getByUserName(user.getName());
+        User userByName = userService.getByUserName(user.getUsername());
+        if(userByName == null) return Response.fail("不存在的用户");
         //验证密码 计算哈希密码， 比较 数据库密码
-        if (UserUtils.calcHashPwd(user.getPassword(), userByName.getSalt()).equals(userByName.getPassword())){
-            loginService.login(user);
+        if (UserUtils.calcHashPwd(password, userByName.getSalt()).equals(userByName.getPassword())){
+            loginService.login(userByName);
             session.setAttribute("user", userByName);
             return Response.success("登录成功");
         }
