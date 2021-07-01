@@ -19,6 +19,11 @@ var data = {
             tableData:"",
             treeData:"",
             treeShow:false,
+            addRolePermissionData:{
+                role_id:"",
+                permissionIds:[]
+            },
+
             //数据权限选择框
             options: [{
                 value: 'all',
@@ -27,9 +32,10 @@ var data = {
                 value: 'treeCustomize',
                 label: '自定义'
             },],
-
-            treeProps:{
-                children: 'children',
+            //添加权限树
+            role_permission_show:false,
+            role_permission_data:"",
+            role_permission_props:{
                 label: 'name'
             },
             //添加角色信息不能为空提示
@@ -99,6 +105,7 @@ var data = {
     },
     created(){
         this.loadData();
+        this.loadPermissionTreeData();
         this.loadExclusionData();
         this.loadIncludeData();
         this.loadMergeData();
@@ -112,9 +119,26 @@ var data = {
             })
             //this.getPageData(this.currentPage,this.pagesize);
         },
+        loadPermissionTreeData(){
+            axios.get("/api/getAllPermissions").then(res=>{
+                this.role_permission_data = res.data.data
+            })
+        },
         //打开添加对话框
         add(){
             this.dialogFormVisible=true;
+        },
+        //打开添加权限对话框
+        addRolePermission(id){
+            this.role_permission_show = true
+            this.addRolePermissionData.role_id = id
+        },
+        addPermissionConfirmClick(){
+            this.addRolePermissionData.permissionIds = this.$refs.permission_tree.getCheckedKeys()
+            axios.post("/role/"+this.addRolePermissionData.role_id+"/insertPermission",this.addRolePermissionData.permissionIds).then(res=>{
+                alert(res.data.msg)
+                this.role_permission_show = false
+            })
         },
         //添加表单提交验证
         roleConfirmClick(formName){

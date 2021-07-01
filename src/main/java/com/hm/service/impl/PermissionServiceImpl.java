@@ -21,7 +21,6 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public List<Permission> findAllPermission() {
         List allPermission = permissionMapper.findAllPermission();
-        System.out.println(allPermission);
         if(null!=allPermission){
             return allPermission;
         }

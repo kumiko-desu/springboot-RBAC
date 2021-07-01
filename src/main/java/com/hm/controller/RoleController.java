@@ -37,7 +37,6 @@ public class RoleController {
     @PostMapping("/insertRole")
     public Response insertRole(@RequestBody Role role){
 //        System.out.println(role.da);
-        System.out.println(role);
         if(roleService.insertRole(role)>0)
             return Response.success();
         else
