@@ -11,6 +11,15 @@
 <!--        <delete id="deleteRole" parameterType="int">-->
 <!--            delete from role where id = #{id}-->
 <!--        </delete>-->
+
+    <insert id="insertRolePermission">
+        insert into role_permission(role_id, permission_id)
+        values
+        <foreach item="item" index="index" collection="permissionIds" separator=",">
+            ( #{roleId}, #{item} )
+        </foreach>
+    </insert>
+
     <select id="getRoleExclusion" resultType="role">
         select * from role
         where id in

@@ -22,6 +22,8 @@ public interface RoleMapper {
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     public int insertRole(@Param("Role") Role role);
 
+    public int insertRolePermission(@Param("roleId") Integer roleId, @Param("permissionIds") List<Integer> permissionIds);
+
     // 获取某个互斥组的所有角色
     @Select("select * from role \n" +
             "where id in \n" +

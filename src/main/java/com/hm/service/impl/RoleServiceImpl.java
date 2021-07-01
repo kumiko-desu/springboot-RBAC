@@ -2,6 +2,7 @@ package com.hm.service.impl;
 
 import com.hm.dao.RoleExclusionGroupMapper;
 import com.hm.dao.RoleIncludeGroupMapper;
+import com.hm.pojo.Permission;
 import com.hm.pojo.RoleIncludeGroup;
 import com.hm.service.RoleService;
 import com.hm.dao.RoleMapper;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -40,6 +42,8 @@ public class RoleServiceImpl implements RoleService {
     public int insertRole(Role role){
         Date date = new Date();
         role.setCreatedTime(date);
+        List<Integer> permissionIds = role.getPermissions().stream().map(Permission::getId).collect(Collectors.toList());
+        roleMapper.insertRolePermission(role.getId(), permissionIds);
         return roleMapper.insertRole(role);
     }
 
