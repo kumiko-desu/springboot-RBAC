@@ -3,6 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Menu</title>
+    <script src="vue3.js"></script>
+    <script src="axios.min.js"></script>
+    <script src="index.full.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-plus/lib/index.full.js"></script>
+    <script src="menu.js"></script>
+
+    <style>
+        .header{
+            background-color: #545c64;
+        }
+        .nav{
+            background-color: #545c64;
+        }
+        .content{
+            background-color: #fff;
+        }
+        #app{
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+            /*overflow: hidden;*/
+        }
+        .table{
+            border: 1px solid #dbdbdb;
+            margin: 15px 0px;
+        }
+        .deleteuser{
+            float: right;
+        }
+        .exclusion_aside{
+            padding-top: 20px;
+        }
+
+    </style>
+
 </head>
 <body id="app">
 <el-container>
@@ -58,22 +96,19 @@
             <el-button type="primary" @click="add">新增</el-button>
 
             <el-table
-                    :data="menu_tableData"
+                    :data="menu_Data"
                     style="width: 100%;margin-bottom: 20px;"
                     row-key="id"
                     border
-                    default-expand-all
                     :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
                 <el-table-column
                         prop="name"
                         label="菜单名"
-                        sortable
                         width="180">
                 </el-table-column>
                 <el-table-column
                         prop="path"
                         label="菜单路径"
-                        sortable
                         width="180">
                 </el-table-column>
                 <el-table-column
@@ -84,93 +119,18 @@
                         prop="description"
                         label="菜单描述">
                 </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="150">
+                    <template #default="scope">
+                        <el-button type="text" size="small">编辑</el-button>
+                        <el-button @click="menuDelete(scope.row.id)" type="text" size="small">删除</el-button>
+                    </template>
+                </el-table-column>
             </el-table>
 
         </el-main>
-
-        <!--        添加角色-->
-        <el-dialog title="角色信息" v-model="dialogFormVisible">
-            <el-form :model="form.addRoleData" :rules="rules" ref="form">
-                <el-form-item label="角色名" :label-width="formLabelWidth" prop="name">
-                    <el-input v-model="form.addRoleData.name" placeholder="请输入角色名" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="角色码" :label-width="formLabelWidth" prop="code">
-                    <el-input v-model="form.addRoleData.code" placeholder="请输入角色码(例如ROLE_ADMIN)" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="最大使用人数" :label-width="formLabelWidth" prop="maxCount">
-                    <el-input v-model.number="form.addRoleData.maxCount" placeholder="请输入该角色最大使用人数" autocomplete="off"></el-input>
-                </el-form-item>
-
-                <!--                <el-form-item label="选择数据权限" :label-width="formLabelWidth" prop="value">-->
-                <!--                    <el-select v-model="form.value" placeholder="请选择数据权限" @change="treeCustomize">-->
-                <!--                        <el-option-->
-                <!--                                v-for="item in options"-->
-                <!--                                :key="item.value"-->
-                <!--                                :label="item.label"-->
-                <!--                                :value="item.value"-->
-                <!--                        >-->
-                <!--                        </el-option>-->
-                <!--                    </el-select>-->
-                <!--                </el-form-item>-->
-
-            </el-form>
-            <el-tree ref="userTree" v-if="treeShow" :data="treeData" :props="treeProps" node-key="id"
-                     @node-click="handleNodeClick"
-                     show-checkbox
-                     @check-change="handleNodeClick"
-            ></el-tree>
-            <template #footer>
-                <span class="dialog-footer">
-                  <el-button @click="resetForm('form')">重 置</el-button>
-                  <el-button type="primary" @click="roleConfirmClick('form')">确 定</el-button>
-                </span>
-            </template>
-        </el-dialog>
-        <!--        添加角色组-->
-        <el-dialog title="角色互斥组信息" v-model="exclusion_show">
-            <el-form :model="exclusion_form.addExclusionGroupData" :rules="exclusion_rules" ref="exclusion_form">
-                <el-form-item label="互斥角色组名" :label-width="formLabelWidth" prop="name">
-                    <el-input v-model="exclusion_form.addExclusionGroupData.name" placeholder="请输入互斥角色组名" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="互斥角色组描述" :label-width="formLabelWidth" prop="description">
-                    <el-input v-model="exclusion_form.addExclusionGroupData.description" placeholder="请输入互斥角色组描述" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="选择互斥角色" :label-width="formLabelWidth" prop="role">
-                    <el-select v-model="exclusion_form.addExclusionGroupData.roleIds" multiple placeholder="请选择">
-                        <el-option
-                                v-for="item in tableData"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-
-                <!--                <el-form-item label="选择数据权限" :label-width="formLabelWidth" prop="value">-->
-                <!--                    <el-select v-model="form.value" placeholder="请选择数据权限" @change="treeCustomize">-->
-                <!--                        <el-option-->
-                <!--                                v-for="item in options"-->
-                <!--                                :key="item.value"-->
-                <!--                                :label="item.label"-->
-                <!--                                :value="item.value"-->
-                <!--                        >-->
-                <!--                        </el-option>-->
-                <!--                    </el-select>-->
-                <!--                </el-form-item>-->
-
-            </el-form>
-            <el-tree ref="userTree" v-if="treeShow" :data="treeData" :props="treeProps" node-key="id"
-                     @node-click="handleNodeClick"
-                     show-checkbox
-                     @check-change="handleNodeClick"
-            ></el-tree>
-            <template #footer>
-                <span class="dialog-footer">
-                  <el-button @click="exclusion_resetForm('exclusion_form')">重 置</el-button>
-                  <el-button type="primary" @click="exclusion_roleConfirmClick('exclusion_form')">确 定</el-button>
-                </span>
-            </template>
-        </el-dialog>
 
     </el-container>
 

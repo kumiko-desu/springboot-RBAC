@@ -16,7 +16,7 @@ public class MenuController {
     @Autowired
     MenuService menuService;
 
-    @RequestMapping("tree")
+    @RequestMapping("/tree")
     public Response<List<Menu>> getTree(){
         return Response.success(menuService.getTree());
     }

@@ -29,6 +29,20 @@ public interface RoleMapper {
             "where group_id = #{groupId})")
     public List<Role> selectByExclusionGroupId(@Param("groupId") Integer groupId);
 
+    //获取某个先决组的所有角色
+    @Select("select * from role \n" +
+            "where id in \n" +
+            "(select DISTINCT role_id from role_include_group_item \n" +
+            "where group_id = #{groupId})")
+    public List<Role> selectByIncludeGroupId(@Param("groupId") Integer groupId);
+
+    //获取某个合并组的所有角色
+    @Select("select * from role \n" +
+            "where id in \n" +
+            "(select DISTINCT role_id from role_merge_group_item \n" +
+            "where group_id = #{groupId})")
+    public List<Role> selectByMergeGroupId(@Param("groupId") Integer groupId);
+
     // 获取用户所有拥有的角色（包括 角色 和 所在角色组中的角色）
     @Select("select r.* from role r \n" +
             "left join user_role ur on ur.role_id=r.id \n" +
