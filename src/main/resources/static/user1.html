@@ -355,6 +355,7 @@
     },
     created(){
       this.loadData();
+      this.getAllUser();
     },
     methods: {
       loadData(){
@@ -362,6 +363,13 @@
           this.data=res.data.data;
           console.log(res);
         })
+      },
+      //显示全部用户
+      getAllUser(){
+          axios.get("http://localhost:80/api/user/all").then(res=>{
+              this.tableData=res.data.data;
+              console.log(res);
+          })
       },
       insertData(){
           axios.post("/api/user/add",this.user).then(res=>{
