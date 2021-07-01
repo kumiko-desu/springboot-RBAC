@@ -44,8 +44,8 @@ public class RoleController {
             return Response.fail();
     }
 
-    @PostMapping("/insertRolePermission")
-    public Response insertRolePermission(Integer roleId, List<Integer> permissionIds){
+    @PostMapping("/role/{roleId}/insertPermission")
+    public Response insertRolePermission(@PathVariable("roleId") Integer roleId, @RequestBody List<Integer> permissionIds){
         if(roleService.insertRolePermission(roleId, permissionIds)>0)
             return Response.success();
         else
