@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+    <script src="vue3.js"></script>
+    <script src="axios.min.js"></script>
+    <script src="index.full.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-plus/lib/index.full.js"></script>
+    <script src="menu.js"></script>
+
+    <style>
+        .header{
+            background-color: #545c64;
+        }
+        .nav{
+            background-color: #545c64;
+        }
+        .content{
+            background-color: #fff;
+        }
+        #app{
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+            /*overflow: hidden;*/
+        }
+        .table{
+            border: 1px solid #dbdbdb;
+            margin: 15px 0px;
+        }
+        .deleteuser{
+            float: right;
+        }
+        .exclusion_aside{
+            padding-top: 20px;
+        }
+
+    </style>
+
+</head>
+<body id="app">
+<el-container>
+
+    <el-container>
+        <el-aside>
+            <el-menu
+                    default-active="4"
+                    class="el-menu-vertical-demo"
+                    @open="handleOpen"
+                    @close="handleClose"
+                    @select="roleManage">
+                <el-menu-item index="1">
+                    <template #title>
+                        <span>用户管理</span>
+                    </template>
+                </el-menu-item>
+
+                <el-menu-item index="2">
+                    <template #title>角色管理</template>
+                </el-menu-item>
+
+                <el-submenu index="3">
+                    <template #title>权限管理</template>
+
+                    <el-menu-item-group>
+                        <el-menu-item index="3-1">
+                            <template #title>权限组管理</template>
+                        </el-menu-item>
+
+                        <el-menu-item index="3-2">
+                            <template #title>权限管理</template>
+                        </el-menu-item>
+                    </el-menu-item-group>
+
+                </el-submenu>
+
+                <el-menu-item index="4">
+                    <template #title>菜单管理</template>
+                </el-menu-item>
+
+                <el-menu-item index="5">
+                    <template #title>操作管理</template>
+                </el-menu-item>
+
+                <el-menu-item index="6">
+                    <template #title>页面管理</template>
+                </el-menu-item>
+            </el-menu>
+        </el-aside>
+
+        <el-main class="content">
+            <el-button type="primary" @click="add">新增</el-button>
+
+            <el-table
+                    :data="menu_Data"
+                    style="width: 100%;margin-bottom: 20px;"
+                    row-key="id"
+                    border
+                    :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+                <el-table-column
+                        prop="name"
+                        label="菜单名"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="path"
+                        label="菜单路径"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="linkType"
+                        label="菜单类型(0本网页打开,1新网页打开)">
+                </el-table-column>
+                <el-table-column
+                        prop="description"
+                        label="菜单描述">
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="150">
+                    <template #default="scope">
+                        <el-button @click="menuDelete(scope.row.id)" type="text" size="small">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+
+        </el-main>
+        <el-dialog title="菜单信息" v-model="menu_show">
+            <el-form :model="form.addMenuData" :rules="menu_rules" ref="form">
+                <el-form-item label="菜单名" :label-width="formLabelWidth" prop="name">
+                    <el-input v-model="form.addMenuData.name" placeholder="请输入菜单名" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="菜单路径" :label-width="formLabelWidth" prop="path">
+                    <el-input v-model="form.addMenuData.path" placeholder="请输入菜单路径(/path)" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="菜单描述" :label-width="formLabelWidth" prop="description">
+                    <el-input v-model.number="form.addMenuData.description" placeholder="请输入菜单描述" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="选择父菜单" :label-width="formLabelWidth">
+                    <el-select v-model="form.addMenuData.parentId" placeholder="请选择(默认为根菜单)">
+                        <el-option
+                                v-for="item in menu_options"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+            </el-form>
+            <!--            <el-tree ref="userTree" v-if="treeShow" :data="treeData" :props="treeProps" node-key="id"-->
+            <!--                     @node-click="handleNodeClick"-->
+            <!--                     show-checkbox-->
+            <!--                     @check-change="handleNodeClick"-->
+            <!--            ></el-tree>-->
+            <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="resetMenuForm('form')">重 置</el-button>
+                  <el-button type="primary" @click="MenuConfirmClick('form')">确 定</el-button>
+                </span>
+            </template>
+        </el-dialog>
+    </el-container>
+
+</el-container>
+<script>
+    const app = Vue.createApp(data);
+    app.use(ElementPlus)
+    app.mount("#app");
+</script>
+</body>
+</html>

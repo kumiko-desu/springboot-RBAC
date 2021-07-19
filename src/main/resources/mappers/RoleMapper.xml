@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hm.dao.RoleMapper">
+
+<!--        <select id="getAllRole" resultType="Role">-->
+<!--            select * from role;-->
+<!--        </select>-->
+
+<!--        <delete id="deleteRole" parameterType="int">-->
+<!--            delete from role where id = #{id}-->
+<!--        </delete>-->
+
+    <insert id="insertRolePermission">
+        insert into role_permission(role_id, permission_id)
+        values
+        <foreach item="item" index="index" collection="permissionIds" separator=",">
+            ( #{roleId}, #{item} )
+        </foreach>
+    </insert>
+
+    <select id="getRoleExclusion" resultType="role">
+        select * from role
+        where id in
+          (select DISTINCT role_id from role_exclusion_group_item
+           where group_id in
+             (select DISTINCT group_id from role_exclusion_group_item
+              where role_id in
+                <foreach item="item" index="index" collection="roleIds"
+                         open="(" separator="," close=")">#{item}
+                </foreach>
+                ))
+    </select>
+</mapper>

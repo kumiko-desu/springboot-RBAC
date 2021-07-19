@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>管理系统</title>
+  <script src="vue3.js"></script>
+  <script src="axios.min.js"></script>
+  <script src="index.full.js"></script>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-plus/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-plus/lib/index.full.js"></script>
+  <script src="role.js"></script>
+  <!--    <link rel="stylesheet" href="index.css">-->
+  <!--    <script src="index.full.js"></script>-->
+
+  <style>
+    .header{
+      background-color: #545c64;
+    }
+    .nav{
+      background-color: #545c64;
+    }
+    .content{
+      background-color: #fff;
+    }
+    #app{
+      margin: 0px;
+      padding: 0px;
+      height: 100%;
+      /*overflow: hidden;*/
+    }
+    .table{
+      border: 1px solid #dbdbdb;
+      margin: 15px 0px;
+    }
+    .deleteuser{
+      float: right;
+    }
+    .exclusion_aside{
+      padding-top: 20px;
+    }
+
+  </style>
+</head>
+<body id="app">
+<el-container>
+
+  <el-aside>
+  <el-menu
+          default-active="0"
+          class="el-menu-vertical-demo"
+          @open="handleOpen"
+          @close="handleClose"
+          @select="roleManage">
+    <el-menu-item index="1">
+      <template #title>
+        <span>用户管理</span>
+      </template>
+    </el-menu-item>
+
+    <el-menu-item index="2">
+      <template #title>角色管理</template>
+    </el-menu-item>
+
+    <el-submenu index="3">
+      <template #title>权限管理</template>
+
+      <el-menu-item-group>
+        <el-menu-item index="3-1">
+          <template #title>权限组管理</template>
+        </el-menu-item>
+
+        <el-menu-item index="3-2">
+          <template #title>权限管理</template>
+        </el-menu-item>
+      </el-menu-item-group>
+
+    </el-submenu>
+
+    <el-menu-item index="4">
+      <template #title>菜单管理</template>
+    </el-menu-item>
+
+    <el-menu-item index="5">
+      <template #title>操作管理</template>
+    </el-menu-item>
+
+    <el-menu-item index="6">
+      <template #title>页面管理</template>
+    </el-menu-item>
+  </el-menu>
+  </el-aside>
+
+</el-container>
+<script>
+  var data={
+    methods:{
+      roleManage(index){
+        if(index==2){
+          // window.location.href="http://localhost:80/role.html"
+          window.location.href="role.html"
+        }
+        if(index==1){
+          window.location.href="user1.html"
+        }
+        if(index==4){
+          window.location.href="menu.html"
+        }
+      }
+    }
+  }
+  const app = Vue.createApp(data);
+  app.use(ElementPlus)
+  app.mount("#app");
+</script>
+
+</body>
+</html>

@@ -12,6 +12,6 @@ public class UserGroupMapperTest {
 
     @Test
     public void selectUserGroup(){
-        System.out.println(userGroupMapper.selectUserGroup());
+        System.out.println(userGroupMapper.selectAll());
     }
 }

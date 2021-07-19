@@ -7,14 +7,18 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class Role {
-    private Integer id;
-    private String name;
-    private String code;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date createdTime;
-    private Integer maxCount;
-    private Integer useCount;
+public class Permission {
 
-    List<Permission> permissions;
+    private Integer id;
+
+    private String name;
+
+    private String code;
+
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    private Date createdTime;
+
+    private List<Menu> menus;
+
+    private List<Button> buttons;
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hm.dao.RoleMergeGroupMapper">
+
+    <select id="getByRoleIds" resultType="RoleMergeGroup">
+        select * from role_merge_group
+        where id in
+        (select DISTINCT group_id from role_merge_group_item
+        where role_id in
+        <foreach item="item" index="index" collection="roleIds"
+                 open="(" separator="," close=")" >
+            #{item}
+        </foreach>)
+    </select>
+
+    <select id="needMerge" resultType="int">
+        select (
+        (select count(1) from role_merge_group_item
+        where group_id = #{groupId}
+        and role_id in
+        <foreach item="item" index="index" collection="roleIds"
+                 open="(" separator="," close=")">#{item}
+        </foreach>)
+            - (select count(1) from role_merge_group_item where group_id = #{groupId})
+        ) as count
+    </select>
+
+</mapper>

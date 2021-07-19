@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录管理系统</title>
+    <script src="axios.min.js"></script>
+    <script src="//unpkg.com/vue@next"></script>
+    <script src="//unpkg.com/element-plus/lib/index.full.js"></script>
+    <style>
+        @import url("//unpkg.com/element-plus/lib/theme-chalk/index.css");
+        .login-box{
+            width: 400px;
+            height: 300px;
+            margin: 200px auto;
+        }
+        #app{
+            background: url("./imgs/eva.jpg") no-repeat;
+        }
+    </style>
+</head>
+<body id="app">
+<div class="login-box">
+    <el-card class="box-card">
+        <div class="text item">
+            <h3 style="text-align: center">登 录</h3>
+            <el-divider></el-divider>
+            <el-form status-icon :rules="rules" :model="loginForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="登录账户" prop="username">
+                    <el-input type="text" v-model="loginForm.username" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="password">
+                    <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="login('ruleForm')">登 录</el-button>
+                    <el-link type="primary" style="margin-left: 20px">注册</el-link>
+                    <el-link type="primary" style="margin-left: 20px">忘记密码？</el-link>
+                </el-form-item>
+            </el-form>
+        </div>
+    </el-card>
+</div>
+<script>
+    var data = {
+        data(){
+            return {
+                loginForm:{
+                    username:"",
+                    password:""
+                },
+                rules:{
+                    "username":[
+                        { required: true, message: '请输入用户名称', trigger: 'blur' }
+                    ],
+                    "password":[
+                        { required: true, message: '请输入用户密码', trigger: 'blur' }
+                    ]
+                }
+            }
+        },
+        created(){
+        },
+        methods:{
+            login(){
+                // if(this.loginForm.username==''){
+                //     this.$message.error({
+                //         message: '请求输入用户名！'
+                //     });
+                //     return;
+                // }
+                this.$refs["ruleForm"].validate(isOk=>{
+                    if(isOk){
+                        axios.post("/oauth/login",this.loginForm).then(res=>{
+                            console.log(res)
+                            if(res.data.code==200){
+                                location.href="/main.html";
+                            }else{
+                                alert(res.data.msg)
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    };
+    const app = Vue.createApp(data);
+    app.use(ElementPlus)
+    app.mount("#app");
+
+</script>
+</body>
+</html>

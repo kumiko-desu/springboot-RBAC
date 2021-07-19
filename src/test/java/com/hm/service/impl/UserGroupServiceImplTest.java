@@ -1,6 +1,5 @@
-package com.hm.serviceImpl;
+package com.hm.service.impl;
 
-import com.hm.service.UserGroupService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +11,7 @@ public class UserGroupServiceImplTest {
     UserGroupServiceImpl userGroupService;
 
     @Test
-    public void getUserGroupTreeTest(){
-        System.out.println(userGroupService.getUserGroupTree());
+    public void getTreeTest(){
+        System.out.println(userGroupService.getTree());
     }
 }
